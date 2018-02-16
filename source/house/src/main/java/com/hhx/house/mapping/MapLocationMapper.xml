@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhx.house.mapping.MapLocationMapper">
+  <resultMap id="BaseResultMap" type="com.hhx.house.entity.MapLocation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
+    <result column="lng" jdbcType="VARCHAR" property="lng" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="precise" jdbcType="VARCHAR" property="precise" />
+    <result column="confidence" jdbcType="VARCHAR" property="confidence" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="gcj_lng" jdbcType="VARCHAR" property="gcjLng" />
+    <result column="gcj_lat" jdbcType="VARCHAR" property="gcjLat" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, data, lng, lat, precise, confidence, level, name, status, gcj_lng, gcj_lat
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from maplocation
+  </select>
+
+</mapper>
