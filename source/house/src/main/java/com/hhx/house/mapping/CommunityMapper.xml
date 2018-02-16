@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhx.house.mapping.CommunityMapper" >
+  <resultMap id="BaseResultMap" type="com.hhx.house.entity.Community" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="link" property="link" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="bizcircle" property="bizcircle" jdbcType="VARCHAR" />
+    <result column="tagList" property="taglist" jdbcType="VARCHAR" />
+    <result column="onsale" property="onsale" jdbcType="VARCHAR" />
+    <result column="onrent" property="onrent" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="housetype" property="housetype" jdbcType="VARCHAR" />
+    <result column="cost" property="cost" jdbcType="VARCHAR" />
+    <result column="service" property="service" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="building_num" property="buildingNum" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="validdate" property="validdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, link, district, bizcircle, tagList, onsale, onrent, year, housetype, cost, 
+    service, company, building_num, house_num, price, validdate
+  </sql>
+
+</mapper>
