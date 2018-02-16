@@ -22,7 +22,7 @@
     },
     methods: {
       // 加载用户来源图
-      getUserChartInit() {
+      getUserChartInit(chartsData) {
         const myChart = echarts.init(document.getElementById('userChart'));
         myChart.showLoading();
         var option = {
@@ -78,20 +78,20 @@
             {
               name: "最高价",
               type: "line",
-              data: [18203, 23489, 131744, 23445],
+              data: chartsData['max'],
               xAxisIndex: 0
             },
             {
               name: "最低价",
               type: "line",
-              data: [19325, 23438, 134141, 345655],
+              data: chartsData['min'],
               xAxisIndex: 1,
               yAxisIndex: 0
             },
             {
               type: "bar",
               name: "平均价",
-              data: [14444, 2444, 456, 5678]
+              data: chartsData['avg']
             }
           ]
         };
@@ -235,7 +235,13 @@
     },
     mounted () {
       this.$nextTick(function () {
-        this.getUserChartInit();
+        this.$http.get('/api/chartsData').then((response) => {
+          response = response.data;
+          if (response.code === ERR_OK) {
+            this.user = response.datas;
+          }
+        });
+        // this.getUserChartInit();
         this.getUserDoChartInit()
       })
     }

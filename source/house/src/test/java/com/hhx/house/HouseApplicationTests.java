@@ -38,6 +38,13 @@ public class HouseApplicationTests {
             mapLocationMapper.updateById(entity);
         });
 
+    }
+
+    @Test
+    public void printSql(){
+        Wrapper<MapLocation> wrapper = new EntityWrapper<>();
+        int size = mapLocationMapper.selectList(wrapper).size();
+        System.out.println("size="+size);
 
     }
 

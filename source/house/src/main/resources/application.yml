@@ -65,3 +65,11 @@ spring:
 
 jpa:
   show-sql: true
+server:
+  port: 8088
+
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.hhx.house.mapping: DEBUG
