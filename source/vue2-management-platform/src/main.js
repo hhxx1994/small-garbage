@@ -21,7 +21,7 @@ import '../static/UE/ueditor.parse.min.js'
 Mock.mockData();
 Vue.use(VueRouter);// 安装路由功能
 /* eslint-disable no-new */
-Vue.use(VueRouter);
+//Vue.use(VueRouter);
 Vue.prototype.$http = axios;
 Vue.use(ElementUI);
 
@@ -48,8 +48,8 @@ let routes = [
     path: '/',
     component: App,
     children: [
-      {path: '/index', component: Index, name: 'index', class: 'fa-line-chart'},
-      {path: '/table', component: Table, name: 'table', class: 'fa-table'},
+      {path: '/index', component: Index, name: '图表', class: 'fa-line-chart'},
+      {path: '/table', component: Table, name: 'table', class: 'fa fa-calculator'},
       {path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'},
       {path: '/editor', component: ue, name: 'editor', class: 'fa-plug'}
     ]

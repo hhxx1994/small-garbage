@@ -8,6 +8,8 @@
         <div id="userDoChart" style="height: 650px" >图表加载失败</div>
       </el-col>
     </el-row>
+
+
   </div>
 </template>
 <script>
@@ -25,84 +27,71 @@
         myChart.showLoading();
         var option = {
           title: {
-            text: '用户来源'
+            text: "北上广深二手房价"
           },
           tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: '#6a7985'
+            trigger: "axis"
+          },
+          legend: {
+            data: ["最高价", "最低价", "平均价"]
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: {
+                show: true
+              },
+              dataView: {
+                show: true,
+                readOnly: true
+              },
+              magicType: {
+                show: false,
+                type: ["line", "bar"]
+              },
+              restore: {
+                show: true
+              },
+              saveAsImage: {
+                show: true
               }
             }
           },
-          legend: {
-            data: ['华东', '华北', '华南', '西部', '其他']
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
+          calculable: true,
           xAxis: [
             {
-              type: 'category',
-              boundaryGap: false,
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+              type: "value",
+              boundaryGap: [0, 0.01]
+            },
+            {
+              type: "value",
+              boundaryGap: [0, 0.01]
             }
           ],
           yAxis: [
             {
-              type: 'value'
+              type: "category",
+              data: ["北京", "上海", "广州", "深圳"]
             }
           ],
           series: [
             {
-              name: '华东',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [120, 132, 101, 134, 90, 230, 210]
+              name: "最高价",
+              type: "line",
+              data: [18203, 23489, 131744, 23445],
+              xAxisIndex: 0
             },
             {
-              name: '华北',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [220, 182, 191, 234, 290, 330, 310]
+              name: "最低价",
+              type: "line",
+              data: [19325, 23438, 134141, 345655],
+              xAxisIndex: 1,
+              yAxisIndex: 0
             },
             {
-              name: '华南',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-              name: '西部',
-              type: 'line',
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-              name: '其他',
-              type: 'line',
-              stack: '总量',
-              label: {
-                normal: {
-                  show: true,
-                  position: 'top'
-                }
-              },
-              areaStyle: {normal: {}},
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
+              type: "bar",
+              name: "平均价",
+              data: [14444, 2444, 456, 5678]
             }
           ]
         };
