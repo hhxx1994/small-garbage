@@ -237,9 +237,8 @@
       this.$nextTick(function () {
         this.$http.get('/api/chartsData').then((response) => {
           response = response.data;
-          if (response.code === ERR_OK) {
-            this.user = response.datas;
-          }
+          console.log(response)
+          this.getUserChartInit(response);
         });
         // this.getUserChartInit();
         this.getUserDoChartInit()
