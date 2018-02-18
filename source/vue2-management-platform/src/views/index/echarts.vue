@@ -2,21 +2,21 @@
   <div class="chart-container">
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="userChart" style="height: 650px" >图表加载失败</div>
+        <div id="userChart" style="height: 300px">图表加载失败</div>
       </el-col>
       <el-col :span="12" class="chart">
-        <div id="userDoChart" style="height: 650px" >图表加载失败</div>
+        <div id="userDoChart" style="height: 300px">图表加载失败</div>
       </el-col>
     </el-row>
+
   </div>
 </template>
 <script>
   import echarts from 'echarts'
+
   export default {
     data() {
-      return {
-
-      };
+      return {};
     },
     methods: {
       // 加载用户来源图
@@ -25,67 +25,70 @@
         myChart.showLoading();
         var option = {
           title: {
-            text: "北上广深二手房价"
+            text: "北上广深"
           },
           tooltip: {
-            trigger: "axis"
-          },
-          legend: {
-            data: ["最高价", "最低价", "平均价"]
-          },
-          toolbox: {
-            show: true,
-            feature: {
-              mark: {
-                show: true
-              },
-              dataView: {
-                show: true,
-                readOnly: true
-              },
-              magicType: {
-                show: false,
-                type: ["line", "bar"]
-              },
-              restore: {
-                show: true
-              },
-              saveAsImage: {
-                show: true
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              crossStyle: {
+                color: '#999'
               }
             }
           },
-          calculable: true,
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          legend: {
+            data: ['最低价', '最高价', '平均价']
+          },
           xAxis: [
             {
-              type: "value",
-              boundaryGap: [0, 0.01],
-              position: "bottom",
-              axisLine: {
-                show: true
+              type: 'category',
+              data: ['北京', '上海', '深圳', '广州'],
+              axisPointer: {
+                type: 'shadow'
               }
             }
           ],
           yAxis: [
             {
-              type: "category",
-              data: ["北京", "上海", "深圳", "广州"]
+              type: 'value',
+              name: '每平方米/元',
+              max: Math.max(...chartsData['max'])+1000,
+              axisLabel: {
+                formatter: '{value}'
+              }
+            },
+            {
+              type: 'value',
+              name: '每平方米/元',
+              max: Math.max(...chartsData['max'])+1000,
+              axisLabel: {
+                formatter: '{value}'
+              }
             }
           ],
           series: [
             {
-              name: "最高价",
-              type: "bar",
-              data: chartsData['max']
-            },
-            {
-              name: "最低价",
-              type: "line",
+              name: '最低价',
+              type: 'bar',
               data: chartsData['min']
             },
             {
-              type: "line",
-              name: "平均价",
+              name: '最高价',
+              type: 'bar',
+              data: chartsData['max']
+            },
+            {
+              name: '平均价',
+              type: 'line',
+              yAxisIndex: 1,
               data: chartsData['avg']
             }
           ]
@@ -148,6 +151,7 @@
             };
           });
         }
+
         var scatterData = getVirtulData();
         option = {
           tooltip: {},
@@ -228,7 +232,7 @@
         myChart.hideLoading();
       }
     },
-    mounted () {
+    mounted() {
       this.$nextTick(function () {
         this.$http.get('/api/chartsData').then((response) => {
           response = response.data;
@@ -242,11 +246,12 @@
   };
 </script>
 <style>
-  .chart{
+  .chart {
     background-color: white;
     border-radius: 4px;
   }
-  .chart_left{
-    border-right:#F2F2F2 10px solid;
+
+  .chart_left {
+    border-right: #F2F2F2 10px solid;
   }
 </style>
