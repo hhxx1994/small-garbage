@@ -1,12 +1,16 @@
 package com.hhx.house.controller;
 
+import com.google.common.collect.Lists;
+import com.hhx.house.constant.AreaConst;
+import com.hhx.house.constant.StatisticsConst;
+import com.hhx.house.model.Statistics;
 import com.hhx.house.service.HouseInfoService;
 import com.hhx.house.vo.HouseDataVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,11 +25,19 @@ public class EchartsController {
 
     @RequestMapping("/chartsData")
     public HouseDataVo chartsData() {
-        Map map = houseInfoService.getHouseInfoStatistics();
+        List<Double> min = Lists.newArrayList();
+        List<Double> max = Lists.newArrayList();
+        List<Double> avg = Lists.newArrayList();
 
-        return HouseDataVo.builder().max(Arrays.asList(100d, 200d, 300d))
-                .min(Arrays.asList(20d, 30d, 80d))
-                .avg(Arrays.asList(50d, 60d, 70d)).build();
+        Map<String, Map<String, Statistics>> map = houseInfoService.getHouseInfoStatistics();
+        for (int i = 0; i < AreaConst.AREAS.length; i++) {
+            Map<String, Statistics> data = map.get(AreaConst.AREAS[i]);
+            Statistics statistics = data.get(StatisticsConst.STATISTICS_UNIT);
+            min.add(statistics.getMin());
+            max.add(statistics.getMax());
+            avg.add(statistics.getAvg());
+        }
 
+        return HouseDataVo.builder().max(max).min(min).avg(avg).build();
     }
 }

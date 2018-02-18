@@ -10,4 +10,6 @@ public class AreaConst {
     public static final String SHENG_ZHEN = "sz";
     public static final String GUANG_ZHOU = "gz";
 
+    public static final String[] AREAS = {BEI_JING, SHANG_HAI, SHENG_ZHEN, GUANG_ZHOU};
+
 }

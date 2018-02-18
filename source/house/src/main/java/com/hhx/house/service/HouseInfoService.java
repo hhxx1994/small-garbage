@@ -2,6 +2,7 @@ package com.hhx.house.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.CacheConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.entity.HouseInfo;
@@ -13,13 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -28,25 +26,24 @@ import java.util.stream.Collectors;
  */
 @Service
 public class HouseInfoService {
-    private static final Pattern PATTERN = Pattern.compile("https://(\\S+).lianjia.com");
+
+    public static final String DOMAIN = ".lianjia.com";
     private Logger logger = LoggerFactory.getLogger(HouseInfoService.class);
     @Autowired
     private HouseInfoMapper houseInfoMapper;
 
-    @Cacheable(value = "models", key = CacheConst.HOUSE_INFO_CACHE)
+    @Cacheable(value = "models")
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
         Map<String, List<HouseInfo>> map = Maps.newHashMap();
+        for (int i = 0; i < AreaConst.AREAS.length; i++) {
+            map.put(AreaConst.AREAS[i], Lists.newArrayList());
+        }
         houseInfoMapper.selectList(null).forEach(houseInfo -> {
             String link = houseInfo.getLink();
-            Matcher matcher = PATTERN.matcher(link);
-            if (matcher.find()) {
-                String key = matcher.group(1);
-                if (map.containsKey(key)) {
-                    map.get(key).add(houseInfo);
-                } else {
-                    ArrayList<HouseInfo> list = Lists.newArrayList();
-                    list.add(houseInfo);
-                    map.put(key, list);
+            for (int i = 0; i < AreaConst.AREAS.length; i++) {
+                if (link.contains(AreaConst.AREAS[i]+ DOMAIN)) {
+                    map.get(AreaConst.AREAS[i]).add(houseInfo);
+                    return;
                 }
             }
         });
@@ -54,8 +51,8 @@ public class HouseInfoService {
         return map;
     }
 
-    @Cacheable(value = "models", key = CacheConst.HOUSE_INFO_STATISTICS_CACHE)
-    public Map getHouseInfoStatistics() {
+    @Cacheable(value = "models")
+    public  Map<String, Map<String, Statistics>> getHouseInfoStatistics() {
         Map<String, List<HouseInfo>> map = houseInfoGroupByArea();
         Map<String, Map<String, Statistics>> data = Maps.newHashMap();
         map.forEach((k, v) -> {

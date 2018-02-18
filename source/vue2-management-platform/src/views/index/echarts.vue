@@ -59,35 +59,32 @@
           xAxis: [
             {
               type: "value",
-              boundaryGap: [0, 0.01]
-            },
-            {
-              type: "value",
-              boundaryGap: [0, 0.01]
+              boundaryGap: [0, 0.01],
+              position: "bottom",
+              axisLine: {
+                show: true
+              }
             }
           ],
           yAxis: [
             {
               type: "category",
-              data: ["北京", "上海", "广州", "深圳"]
+              data: ["北京", "上海", "深圳", "广州"]
             }
           ],
           series: [
             {
               name: "最高价",
-              type: "line",
-              data: chartsData['max'],
-              xAxisIndex: 0
+              type: "bar",
+              data: chartsData['max']
             },
             {
               name: "最低价",
               type: "line",
-              data: chartsData['min'],
-              xAxisIndex: 1,
-              yAxisIndex: 0
+              data: chartsData['min']
             },
             {
-              type: "bar",
+              type: "line",
               name: "平均价",
               data: chartsData['avg']
             }
