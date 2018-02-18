@@ -8,8 +8,6 @@
         <div id="userDoChart" style="height: 650px" >图表加载失败</div>
       </el-col>
     </el-row>
-
-
   </div>
 </template>
 <script>
