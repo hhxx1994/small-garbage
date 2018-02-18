@@ -9,6 +9,7 @@ import com.hhx.house.mapping.HouseInfoMapper;
 import com.hhx.house.mapping.RentInfoMapper;
 import com.hhx.house.mapping.SellInfoMapper;
 import com.hhx.house.model.Statistics;
+import com.hhx.house.vo.HouseAreaRatioVo;
 import com.hhx.house.vo.UserStatVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +122,18 @@ public class HouseInfoService {
         return UserStatVo.builder().focus(focus).watch(watch).rent(rentInfoMapper.selectCount(null)).sell
                 (sellInfoMapper.selectCount(null)).build();
 
+    }
 
+    public List<HouseAreaRatioVo> areaPriceRatio() {
+        return houseInfoMapper.selectList(null).stream().map(houseInfo -> {
+            String square = houseInfo.getSquare();
+            try {
+                double area = Double.parseDouble(square.substring(0, square.length() - 2));
+                double price = Double.parseDouble(houseInfo.getUnitprice());
+                return new HouseAreaRatioVo(area, price);
+            } catch (Exception e) {
+                return new HouseAreaRatioVo(0, 0);
+            }
+        }).collect(Collectors.toList());
     }
 }

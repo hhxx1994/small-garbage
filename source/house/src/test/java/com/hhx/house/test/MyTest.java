@@ -24,4 +24,10 @@ public class MyTest {
 
     }
 
+    @Test
+    public void test01(){
+        double v = Double.parseDouble("121.25平米");
+        System.out.println(v);
+    }
+
 }

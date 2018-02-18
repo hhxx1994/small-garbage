@@ -373,11 +373,8 @@
           series: [{
             name: 'price-area',
             type: 'scatter',
-            data: [
-              [100,2000]
-            ],
+            data: chartsData,
             symbolSize: 4,
-
 
           },
 
@@ -402,7 +399,12 @@
           response = response.data;
           this.getPeopleChartInit(response)
         });
-        this.getAreaPriceInit();
+        this.$http.get('/api/chartsData/houseAreaRatio').then((response) => {
+          response = response.data;
+          let chartsData=[];
+          response.forEach(ele=>chartsData.push([ele['area'],ele['price']]));
+          this.getAreaPriceInit(chartsData)
+        });
 
       })
     }

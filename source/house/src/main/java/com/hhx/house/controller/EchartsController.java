@@ -6,6 +6,7 @@ import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.service.HouseInfoService;
+import com.hhx.house.vo.HouseAreaRatioVo;
 import com.hhx.house.vo.HouseDataVo;
 import com.hhx.house.vo.UserStatVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,11 @@ public class EchartsController {
     @RequestMapping("/userStats")
     public UserStatVo getUserStats() {
         return houseInfoService.getFollowInfo();
+    }
+
+
+    @RequestMapping("/houseAreaRatio")
+    public List<HouseAreaRatioVo> getHouseAreaRatio() {
+        return houseInfoService.areaPriceRatio();
     }
 }
