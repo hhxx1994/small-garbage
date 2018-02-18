@@ -7,6 +7,7 @@ import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.service.HouseInfoService;
 import com.hhx.house.vo.HouseDataVo;
+import com.hhx.house.vo.UserStatVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,10 +43,16 @@ public class EchartsController {
 
         return HouseDataVo.builder().max(max).min(min).avg(avg).build();
     }
+
     @RequestMapping("/houseRatio")
     public Map<String, Integer> ratioData() {
         Map<String, Integer> map = Maps.newHashMap();
         houseInfoService.houseInfoGroupByArea().forEach((k, v) -> map.put(k, v.size()));
         return map;
+    }
+
+    @RequestMapping("/userStats")
+    public UserStatVo getUserStats() {
+        return houseInfoService.getFollowInfo();
     }
 }

@@ -8,6 +8,15 @@
         <div id="userDoChart" style="height: 300px">图表加载失败</div>
       </el-col>
     </el-row>
+    <hr>
+    <el-row>
+      <el-col :span="12" class="chart chart_left">
+        <div id="peopleChart" style="height: 300px">图表加载失败</div>
+      </el-col>
+      <el-col :span="12" class="chart">
+        <div id="areaPrice" style="height: 300px">图表加载失败</div>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
@@ -108,6 +117,14 @@
             trigger: 'item',
             formatter: "{a} <br/>{b}: {c} ({d}%)"
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           legend: {
             orient: 'vertical',
             x: 'right',
@@ -148,7 +165,227 @@
         };
         myChart.setOption(option);
         myChart.hideLoading();
-      }
+      },
+      getPeopleChartInit(chartsData) {
+        const myChart = echarts.init(document.getElementById('peopleChart'));
+        myChart.showLoading();
+        var option =  {
+          backgroundColor: '#2c343c',
+
+          title: {
+            text: '用户分布',
+            left: 'center',
+            top: 20,
+            textStyle: {
+              color: '#ccc'
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+
+          tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+
+          visualMap: {
+            show: true,
+            min: 5000,
+            max: 600000,
+            inRange: {
+              colorLightness: [0, 1]
+            }
+          },
+          series : [
+            {
+              name:'访问来源',
+              type:'pie',
+              radius : '55%',
+              center: ['50%', '50%'],
+              data:[
+                {value:chartsData['focus'], name:'关注人数'},
+                {value:chartsData['sell'], name:'购买人数'},
+                {value:chartsData['watch'], name:'看房人数'},
+                {value:chartsData['rent'], name:'出租人数'}
+              ].sort(function (a, b) { return a.value - b.value; }),
+              roseType: 'radius',
+              label: {
+                normal: {
+                  textStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                  },
+                  smooth: 0.2,
+                  length: 10,
+                  length2: 20
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#c23531',
+                  shadowBlur: 200,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              },
+
+              animationType: 'scale',
+              animationEasing: 'elasticOut',
+              animationDelay: function (idx) {
+                return Math.random() * 200;
+              }
+            }
+          ]
+        };
+        myChart.setOption(option);
+        myChart.hideLoading();
+      },
+      getAreaPriceInit(chartsData) {
+        const myChart = echarts.init(document.getElementById('areaPrice'));
+        myChart.showLoading();
+        var option = {
+
+          title: {
+            text: '房价-面积比',
+            x: 'center',
+            y: 0,
+            textStyle: {
+              color: '#3259B8',
+              fontSize: 16,
+              fontWeight: 'normal',
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          visualMap: {
+            min: 15202,
+            max: 159980,
+            dimension: 1,
+            left: 'right',
+            top: 'top',
+            text: ['HIGH', 'LOW'], // 文本，默认为数值文本
+            calculable: true,
+            itemWidth: 18,
+            itemHeight: 160,
+            textStyle: {
+              color: '#3259B8',
+              height: 56,
+              fontSize: 11,
+              lineHeight: 60,
+            },
+            inRange: {
+              color: ['#3EACE5', '#F02FC2']
+            },
+            padding: [50, 20],
+            orient: 'horizontal',
+          },
+          grid: {
+            left: '5%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          tooltip: {
+            trigger: 'item',
+            showDelay: 0,
+            formatter: function(params) {
+              if (params.value.length > 1) {
+                return 'Area: ' +
+                  params.value[0] + '㎡<br/> ' + 'House price: ' +
+                  params.value[1] + ' CNY/㎡ ';
+              } else {
+                return params.seriesName + ' :<br/>' +
+                  params.name + ' : ' +
+                  params.value + ' CNY/㎡ ';
+              }
+            },
+            axisPointer: {
+              show: true,
+              type: 'cross',
+              lineStyle: {
+                type: 'dashed',
+                width: 1
+              }
+            }
+          },
+
+          xAxis: [{
+            type: 'value',
+            scale: true,
+            axisLabel: {
+              formatter: '{value} ㎡'
+            },
+            nameTextStyle: {
+              color: '#3259B8',
+              fontSize: 14,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#3259B8',
+              }
+            },
+            splitLine: {
+              show: false,
+            }
+          }],
+          yAxis: [{
+            type: 'value',
+            scale: true,
+            axisLabel: {
+              formatter: '{value} CNY/㎡'
+            },
+            nameTextStyle: {
+              color: '#3259B8',
+              fontSize: 14
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#3259B8',
+              }
+            },
+            splitLine: {
+              show: false,
+            }
+          }],
+          series: [{
+            name: 'price-area',
+            type: 'scatter',
+            data: [
+              [100,2000]
+            ],
+            symbolSize: 4,
+
+
+          },
+
+          ]
+        };
+        myChart.setOption(option);
+        myChart.hideLoading();
+      },
     },
     mounted() {
       this.$nextTick(function () {
@@ -161,6 +398,11 @@
           response = response.data;
           this.getUserDoChartInit(response)
         });
+        this.$http.get('/api/chartsData/userStats').then((response) => {
+          response = response.data;
+          this.getPeopleChartInit(response)
+        });
+        this.getAreaPriceInit();
 
       })
     }
