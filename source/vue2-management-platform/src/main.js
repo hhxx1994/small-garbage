@@ -48,7 +48,7 @@ let routes = [
     path: '/',
     component: App,
     children: [
-      {path: '/index', component: Index, name: '图表', class: 'fa-line-chart'},
+      {path: '/index', component: Index, name: '统计图表', class: 'fa-line-chart'},
       {path: '/table', component: Table, name: 'table', class: 'fa fa-calculator'},
       {path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'},
       {path: '/editor', component: ue, name: 'editor', class: 'fa-plug'}
@@ -62,5 +62,6 @@ let router = new VueRouter({
 });
 let app = new Vue({
   router
+
 }).$mount('#app');
 export default app;

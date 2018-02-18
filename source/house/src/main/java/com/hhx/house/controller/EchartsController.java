@@ -8,6 +8,7 @@ import com.hhx.house.model.Statistics;
 import com.hhx.house.service.HouseInfoService;
 import com.hhx.house.vo.HouseAreaRatioVo;
 import com.hhx.house.vo.HouseDataVo;
+import com.hhx.house.vo.SubWayVo;
 import com.hhx.house.vo.UserStatVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,5 +62,10 @@ public class EchartsController {
     @RequestMapping("/houseAreaRatio")
     public List<HouseAreaRatioVo> getHouseAreaRatio() {
         return houseInfoService.areaPriceRatio();
+    }
+
+    @RequestMapping("/subWayData")
+    public Map<Boolean, SubWayVo> subWayData(){
+        return houseInfoService.subWayData();
     }
 }

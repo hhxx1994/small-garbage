@@ -1,16 +1,6 @@
 <template>
   <section class="chart-container">
     <el-row>
-      <!--<div class="show-section top">-->
-        <!--<span>今日系统安全指数：</span>-->
-        <!--<el-rate-->
-          <!--v-model="value5"-->
-          <!--disabled-->
-          <!--show-text-->
-          <!--text-color="#ff9900"-->
-          <!--text-template="{value}">-->
-        <!--</el-rate>-->
-      <!--</div>-->
       <div class="show-section">
         <v-charts></v-charts>
       </div>

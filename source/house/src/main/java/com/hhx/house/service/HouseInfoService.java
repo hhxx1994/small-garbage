@@ -5,12 +5,15 @@ import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.entity.HouseInfo;
+import com.hhx.house.mapping.CommunityMapper;
 import com.hhx.house.mapping.HouseInfoMapper;
 import com.hhx.house.mapping.RentInfoMapper;
 import com.hhx.house.mapping.SellInfoMapper;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.vo.HouseAreaRatioVo;
+import com.hhx.house.vo.SubWayVo;
 import com.hhx.house.vo.UserStatVo;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class HouseInfoService {
 
     @Autowired
     private SellInfoMapper sellInfoMapper;
+
+    @Autowired
+    private CommunityMapper communityMapper;
 
     @Cacheable(value = "models", key = "#root.methodName")
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
@@ -135,5 +141,25 @@ public class HouseInfoService {
                 return new HouseAreaRatioVo(0, 0);
             }
         }).collect(Collectors.toList());
+    }
+
+    public Map<Boolean, SubWayVo> subWayData() {
+        Map<Boolean, SubWayVo> map = Maps.newHashMap();
+        communityMapper.selectList(null).stream()
+                .collect(Collectors.groupingBy(community -> StringUtils.isNotBlank(community.getTaglist())))
+                .forEach((k, v) -> {
+                    List<Double> collect = v.stream().map(ele -> Double.parseDouble(ele.getPrice()))
+                            .sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+                    int size = collect.size();
+                    SubWayVo subWayVo = SubWayVo.builder().lower(collect.get(0))
+                            .upper(collect.get(size - 1))
+                            .median(collect.get(size / 2))
+                            .q1(collect.get(new Double(size * 0.25).intValue()))
+                            .q3(collect.get(new Double(size * 0.75).intValue()))
+                            .build();
+                    map.put(k, subWayVo);
+                });
+        return map;
+
     }
 }

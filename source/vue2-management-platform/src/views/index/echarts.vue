@@ -17,6 +17,15 @@
         <div id="areaPrice" style="height: 300px">图表加载失败</div>
       </el-col>
     </el-row>
+    <hr>
+    <el-row>
+      <el-col :span="12" class="chart chart_left">
+        <div id="subWayCharts" style="height: 300px">图表加载失败</div>
+      </el-col>
+      <el-col :span="12" class="chart">
+        <div id="areaPrice2" style="height: 300px">图表加载失败</div>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
@@ -69,7 +78,7 @@
             {
               type: 'value',
               name: '每平方米/元',
-              max: Math.max(...chartsData['max'])+1000,
+              max: Math.max(...chartsData['max']) + 1000,
               axisLabel: {
                 formatter: '{value}'
               }
@@ -77,7 +86,7 @@
             {
               type: 'value',
               name: '每平方米/元',
-              max: Math.max(...chartsData['max'])+1000,
+              max: Math.max(...chartsData['max']) + 1000,
               axisLabel: {
                 formatter: '{value}'
               }
@@ -128,12 +137,12 @@
           legend: {
             orient: 'vertical',
             x: 'right',
-            data:['北京','上海','深圳','广州']
+            data: ['北京', '上海', '深圳', '广州']
           },
           series: [
             {
-              name:'访问来源',
-              type:'pie',
+              name: '访问来源',
+              type: 'pie',
               radius: ['50%', '70%'],
               avoidLabelOverlap: false,
               label: {
@@ -154,11 +163,11 @@
                   show: false
                 }
               },
-              data:[
-                {value:chartsData['bj'], name:'北京'},
-                {value:chartsData['sh'], name:'上海'},
-                {value:chartsData['sz'], name:'深圳'},
-                {value:chartsData['gz'], name:'广州'}
+              data: [
+                {value: chartsData['bj'], name: '北京'},
+                {value: chartsData['sh'], name: '上海'},
+                {value: chartsData['sz'], name: '深圳'},
+                {value: chartsData['gz'], name: '广州'}
               ]
             }
           ]
@@ -169,7 +178,7 @@
       getPeopleChartInit(chartsData) {
         const myChart = echarts.init(document.getElementById('peopleChart'));
         myChart.showLoading();
-        var option =  {
+        var option = {
           backgroundColor: '#2c343c',
 
           title: {
@@ -189,7 +198,7 @@
             }
           },
 
-          tooltip : {
+          tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
           },
@@ -202,18 +211,20 @@
               colorLightness: [0, 1]
             }
           },
-          series : [
+          series: [
             {
-              name:'访问来源',
-              type:'pie',
-              radius : '55%',
+              name: '访问来源',
+              type: 'pie',
+              radius: '55%',
               center: ['50%', '50%'],
-              data:[
-                {value:chartsData['focus'], name:'关注人数'},
-                {value:chartsData['sell'], name:'购买人数'},
-                {value:chartsData['watch'], name:'看房人数'},
-                {value:chartsData['rent'], name:'出租人数'}
-              ].sort(function (a, b) { return a.value - b.value; }),
+              data: [
+                {value: chartsData['focus'], name: '关注人数'},
+                {value: chartsData['sell'], name: '购买人数'},
+                {value: chartsData['watch'], name: '看房人数'},
+                {value: chartsData['rent'], name: '出租人数'}
+              ].sort(function (a, b) {
+                return a.value - b.value;
+              }),
               roseType: 'radius',
               label: {
                 normal: {
@@ -305,7 +316,7 @@
           tooltip: {
             trigger: 'item',
             showDelay: 0,
-            formatter: function(params) {
+            formatter: function (params) {
               if (params.value.length > 1) {
                 return 'Area: ' +
                   params.value[0] + '㎡<br/> ' + 'House price: ' +
@@ -383,6 +394,266 @@
         myChart.setOption(option);
         myChart.hideLoading();
       },
+      getSubWayInit(chartsData) {
+        const myChart = echarts.init(document.getElementById('subWayCharts'));
+        myChart.showLoading();
+        let option = {
+          title: {
+            text: '地铁与非地铁房房价分布',
+            x: 'center',
+            y: 20,
+            textStyle: {
+              color: '#3259B8',
+              fontSize: 16,
+              fontWeight: 'normal',
+            },
+          },
+          tooltip: {
+            trigger: 'item',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: [{
+            height: '40%',
+            left: '20%',
+            right: '10%',
+          },
+            {
+              top: '40%',
+              height: '40%',
+              left: '20%',
+              right: '10%',
+            }],
+          legent: {
+            data: ['有地铁', '无地铁'],
+            textStyle: {
+              color: '#3259B8',
+            },
+            top: 20,
+          },
+          yAxis: [{
+            type: 'category',
+            gridIndex: 0,
+            data: ['有地铁'],
+            nameTextStyle: {
+              color: '#3259B8',
+              fontSize: 16,
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#3259B8',
+              }
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              rotate: 0,
+            },
+            splitLine: {
+              show: false
+            }
+          },
+            {
+              type: 'category',
+              gridIndex: 1,
+              data: ['无地铁'],
+              nameTextStyle: {
+                color: '#3259B8',
+                fontSize: 16,
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#3259B8',
+                }
+              },
+              axisTick: {
+                show: false,
+              },
+              axisLabel: {
+                rotate: 0,
+              },
+              splitLine: {
+                show: false
+              }
+            }],
+          xAxis: [{
+            type: 'value',
+            gridIndex: 0,
+            nameTextStyle: {
+              color: '#3259B8',
+              fontSize: 14,
+            },
+            axisLabel: {
+              show: false,
+              formatter: '{value}'
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#3259B8',
+              }
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#A7BAFA',
+              },
+            }
+
+          },
+            {
+              type: 'value',
+              gridIndex: 1,
+              nameTextStyle: {
+                color: '#3259B8',
+                fontSize: 14,
+              },
+              axisTick: {
+                show: false,
+              },
+              axisLabel: {
+                formatter: '{value}'
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#3259B8',
+                }
+              },
+              splitLine: {
+                lineStyle: {
+                  color: '#A7BAFA',
+                },
+              }
+
+            }],
+          series: [{
+            name: '有地铁',
+            type: 'boxplot',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            padding: [20, 0],
+            boxWidth: ['10%', '20%'],
+            data: [
+              chartsData['subway']
+            ],
+            itemStyle: {
+              normal: {
+                borderColor: {
+                  type: 'linear',
+                  x: 1,
+                  y: 0,
+                  x2: 0,
+                  y2: 0,
+                  colorStops: [{
+                    offset: 0,
+                    color: '#F02FC2' // 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#956FD4' // 100% 处的颜色
+                  }],
+                  globalCoord: false // 缺省为 false
+                },
+                borderWidth: 2,
+                color: {
+                  type: 'linear',
+                  x: 1,
+                  y: 0,
+                  x2: 0,
+                  y2: 0,
+                  colorStops: [{
+                    offset: 0,
+                    color: 'rgba(240,47,194,0.7)'// 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: 'rgba(149,111,212,0.7)'  // 100% 处的颜色
+                  }],
+                  globalCoord: false // 缺省为 false
+                },
+              }
+            },
+
+
+            tooltip: {
+              formatter: function (param) {
+                return [
+                  'upper: ' + param.data[5],
+                  'Q3: ' + param.data[4],
+                  'median: ' + param.data[3],
+                  'Q1: ' + param.data[2],
+                  'lower: ' + param.data[1]
+                ].join('<br/>')
+              }
+            }
+          },
+            {
+              name: '无地铁',
+              xAxisIndex: 1,
+              yAxisIndex: 1,
+              type: 'boxplot',
+              data: [
+                chartsData['noSubway']
+              ],
+              boxWidth: ['10%', '20%'],
+              itemStyle: {
+                normal: {
+                  borderColor: {
+                    type: 'linear',
+                    x: 1,
+                    y: 0,
+                    x2: 0,
+                    y2: 0,
+                    colorStops: [{
+                      offset: 0,
+                      color: '#3EACE5' // 0% 处的颜色
+                    }, {
+                      offset: 1,
+                      color: '#956FD4' // 100% 处的颜色
+                    }],
+                    globalCoord: false // 缺省为 false
+                  },
+                  borderWidth: 2,
+                  color: {
+                    type: 'linear',
+                    x: 1,
+                    y: 0,
+                    x2: 0,
+                    y2: 0,
+                    colorStops: [{
+                      offset: 0,
+                      color: 'rgba(62,172,299,0.7)'  // 0% 处的颜色
+                    }, {
+                      offset: 1,
+                      color: 'rgba(149,111,212,0.7)'  // 100% 处的颜色
+                    }],
+                    globalCoord: false // 缺省为 false
+                  },
+                }
+              },
+
+
+              tooltip: {
+                formatter: function (param) {
+                  return [
+
+                    'upper: ' + param.data[5],
+                    'Q3: ' + param.data[4],
+                    'median: ' + param.data[3],
+                    'Q1: ' + param.data[2],
+                    'lower: ' + param.data[1]
+                  ].join('<br/>')
+                }
+              }
+            },
+
+          ]
+        };
+        myChart.setOption(option);
+        myChart.hideLoading();
+      },
     },
     mounted() {
       this.$nextTick(function () {
@@ -401,10 +672,20 @@
         });
         this.$http.get('/api/chartsData/houseAreaRatio').then((response) => {
           response = response.data;
-          let chartsData=[];
-          response.forEach(ele=>chartsData.push([ele['area'],ele['price']]));
+          let chartsData = [];
+          response.forEach(ele => chartsData.push([ele['area'], ele['price']]));
           this.getAreaPriceInit(chartsData)
         });
+        this.$http.get('/api/chartsData/subWayData').then((response) => {
+          response = response.data;
+          let trueJson=response['true'];
+          let falseJson=response['false'];
+          let subway=[trueJson['lower'],trueJson['q1'],trueJson['median'],trueJson['q3'],trueJson['upper']];
+          let noSubway=[falseJson['lower'],falseJson['q1'],falseJson['median'],falseJson['q3'],falseJson['upper']];
+          let chartsData = {'subway':subway,'noSubway':noSubway};
+          this.getSubWayInit(chartsData)
+        });
+
 
       })
     }
