@@ -1,6 +1,7 @@
 package com.hhx.house.controller;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.model.Statistics;
@@ -18,12 +19,13 @@ import java.util.Map;
  * @since 2018/2/16 23:59
  */
 @RestController
+@RequestMapping("/chartsData")
 public class EchartsController {
 
     @Autowired
     private HouseInfoService houseInfoService;
 
-    @RequestMapping("/chartsData")
+    @RequestMapping("/houseInfo")
     public HouseDataVo chartsData() {
         List<Double> min = Lists.newArrayList();
         List<Double> max = Lists.newArrayList();
@@ -39,5 +41,11 @@ public class EchartsController {
         }
 
         return HouseDataVo.builder().max(max).min(min).avg(avg).build();
+    }
+    @RequestMapping("/houseRatio")
+    public Map<String, Integer> ratioData() {
+        Map<String, Integer> map = Maps.newHashMap();
+        houseInfoService.houseInfoGroupByArea().forEach((k, v) -> map.put(k, v.size()));
+        return map;
     }
 }

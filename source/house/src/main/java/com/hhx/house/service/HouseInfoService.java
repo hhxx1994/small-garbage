@@ -32,7 +32,7 @@ public class HouseInfoService {
     @Autowired
     private HouseInfoMapper houseInfoMapper;
 
-    @Cacheable(value = "models")
+   @Cacheable(value = "models",key = "#root.methodName")
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
         Map<String, List<HouseInfo>> map = Maps.newHashMap();
         for (int i = 0; i < AreaConst.AREAS.length; i++) {
@@ -51,7 +51,7 @@ public class HouseInfoService {
         return map;
     }
 
-    @Cacheable(value = "models")
+    @Cacheable(value = "models",key = "#root.methodName")
     public  Map<String, Map<String, Statistics>> getHouseInfoStatistics() {
         Map<String, List<HouseInfo>> map = houseInfoGroupByArea();
         Map<String, Map<String, Statistics>> data = Maps.newHashMap();

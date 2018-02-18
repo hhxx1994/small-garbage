@@ -25,7 +25,7 @@
         myChart.showLoading();
         var option = {
           title: {
-            text: "北上广深"
+            text: "价格统计图"
           },
           tooltip: {
             trigger: 'axis',
@@ -97,150 +97,71 @@
         myChart.hideLoading();
       },
       // 加载每日用户行为图
-      getUserDoChartInit() {
+      getUserDoChartInit(chartsData) {
         const myChart = echarts.init(document.getElementById('userDoChart'));
         myChart.showLoading();
-        var app = {};
-        var option = null;
-        var cellSize = [80, 80];
-        var pieRadius = 30;
-
-        function getVirtulData() {
-          var date = +echarts.number.parseDate('2017-02-01');
-          var end = +echarts.number.parseDate('2017-03-01');
-          var dayTime = 3600 * 24 * 1000;
-          var data = [];
-          for (var time = date; time < end; time += dayTime) {
-            data.push([
-              echarts.format.formatTime('yyyy-MM-dd', time),
-              Math.floor(Math.random() * 10000)
-            ]);
-          }
-          return data;
-        }
-
-        function getPieSeries(scatterData, chart) {
-          return echarts.util.map(scatterData, function (item, index) {
-            var center = chart.convertToPixel('calendar', item);
-            return {
-              id: index + 'pie',
-              type: 'pie',
-              center: center,
-              label: {
-                normal: {
-                  formatter: '{c}',
-                  position: 'inside'
-                }
-              },
-              radius: pieRadius,
-              data: [
-                {name: '工作', value: Math.round(Math.random() * 24)},
-                {name: '娱乐', value: Math.round(Math.random() * 24)},
-                {name: '睡觉', value: Math.round(Math.random() * 24)}
-              ]
-            };
-          });
-        }
-
-        function getPieSeriesUpdate(scatterData, chart) {
-          return echarts.util.map(scatterData, function (item, index) {
-            var center = chart.convertToPixel('calendar', item);
-            return {
-              id: index + 'pie',
-              center: center
-            };
-          });
-        }
-
-        var scatterData = getVirtulData();
-        option = {
-          tooltip: {},
+        var option = {
           title: {
-            text: '每日用户行为'
+            text: "房源数量比例统计图"
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
           },
           legend: {
-            data: ['工作', '娱乐', '睡觉'],
-            bottom: 20
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          calendar: {
-            top: 'middle',
-            left: 'center',
             orient: 'vertical',
-            cellSize: cellSize,
-            yearLabel: {
-              show: false,
-              textStyle: {
-                fontSize: 30
-              }
-            },
-            dayLabel: {
-              margin: 20,
-              firstDay: 1,
-              nameMap: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-            },
-            monthLabel: {
-              show: false
-            },
-            range: ['2017-02']
+            x: 'right',
+            data:['北京','上海','深圳','广州']
           },
-          series: [{
-            id: 'label',
-            type: 'scatter',
-            coordinateSystem: 'calendar',
-            symbolSize: 1,
-            label: {
-              normal: {
-                show: true,
-                formatter: function (params) {
-                  return echarts.format.formatTime('dd', params.value[0]);
+          series: [
+            {
+              name:'访问来源',
+              type:'pie',
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: 'center'
                 },
-                offset: [-cellSize[0] / 2 + 10, -cellSize[1] / 2 + 10],
-                textStyle: {
-                  color: '#000',
-                  fontSize: 14
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: '30',
+                    fontWeight: 'bold'
+                  }
                 }
-              }
-            },
-            data: scatterData
-          }]
-        };
-        if (!app.inNode) {
-          var pieInitialized;
-          setTimeout(function () {
-            pieInitialized = true;
-            myChart.setOption({
-              series: getPieSeries(scatterData, myChart)
-            });
-          }, 10);
-
-          app.onresize = function () {
-            if (pieInitialized) {
-              myChart.setOption({
-                series: getPieSeriesUpdate(scatterData, myChart)
-              });
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data:[
+                {value:chartsData['bj'], name:'北京'},
+                {value:chartsData['sh'], name:'上海'},
+                {value:chartsData['sz'], name:'深圳'},
+                {value:chartsData['gz'], name:'广州'}
+              ]
             }
-          };
-        }
-        if (option && typeof option === "object") {
-          myChart.setOption(option, true);
-        }
+          ]
+        };
+        myChart.setOption(option);
         myChart.hideLoading();
       }
     },
     mounted() {
       this.$nextTick(function () {
-        this.$http.get('/api/chartsData').then((response) => {
+        this.$http.get('/api/chartsData/houseInfo').then((response) => {
           response = response.data;
-          console.log(response)
           this.getUserChartInit(response);
         });
-        // this.getUserChartInit();
-        this.getUserDoChartInit()
+
+        this.$http.get('/api/chartsData/houseRatio').then((response) => {
+          response = response.data;
+          this.getUserDoChartInit(response)
+        });
+
       })
     }
   };

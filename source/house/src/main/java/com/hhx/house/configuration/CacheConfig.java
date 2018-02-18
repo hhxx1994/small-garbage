@@ -15,10 +15,10 @@ import java.util.Collections;
 @Configuration
 public class CacheConfig {
 
-    @Bean
-    public CacheManager cacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(Collections.singletonList(new ConcurrentMapCache("models")));
-        return cacheManager;
-    }
+//    @Bean
+//    public CacheManager cacheManager() {
+//        SimpleCacheManager cacheManager = new SimpleCacheManager();
+//        cacheManager.setCaches(Collections.singletonList(new ConcurrentMapCache("models")));
+//        return cacheManager;
+//    }
 }
