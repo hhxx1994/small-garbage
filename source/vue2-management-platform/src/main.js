@@ -49,7 +49,7 @@ let routes = [
     component: App,
     children: [
       {path: '/index', component: Index, name: '统计图表', class: 'fa-line-chart'},
-      {path: '/table', component: Table, name: 'table', class: 'fa fa-calculator'},
+      {path: '/table', component: Table, name: '热力图', class: 'fa-line-chart'},
       {path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'},
       {path: '/editor', component: ue, name: 'editor', class: 'fa-plug'}
     ]
