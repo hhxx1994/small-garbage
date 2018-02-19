@@ -6,11 +6,9 @@ import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.service.HouseInfoService;
-import com.hhx.house.vo.HouseAreaRatioVo;
-import com.hhx.house.vo.HouseDataVo;
-import com.hhx.house.vo.SubWayVo;
-import com.hhx.house.vo.UserStatVo;
+import com.hhx.house.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +26,7 @@ public class EchartsController {
     @Autowired
     private HouseInfoService houseInfoService;
 
+    @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/houseInfo")
     public HouseDataVo chartsData() {
         List<Double> min = Lists.newArrayList();
@@ -46,6 +45,7 @@ public class EchartsController {
         return HouseDataVo.builder().max(max).min(min).avg(avg).build();
     }
 
+    @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/houseRatio")
     public Map<String, Integer> ratioData() {
         Map<String, Integer> map = Maps.newHashMap();
@@ -53,19 +53,34 @@ public class EchartsController {
         return map;
     }
 
+    @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/userStats")
     public UserStatVo getUserStats() {
         return houseInfoService.getFollowInfo();
     }
 
 
+    @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/houseAreaRatio")
     public List<HouseAreaRatioVo> getHouseAreaRatio() {
         return houseInfoService.areaPriceRatio();
     }
 
+    @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/subWayData")
-    public Map<Boolean, SubWayVo> subWayData(){
+    public Map<Boolean, SubWayVo> subWayData() {
         return houseInfoService.subWayData();
+    }
+
+    @Cacheable(value = "models", key = "#root.methodName")
+    @RequestMapping("/peoplePrice")
+    public Map<String, List<PeoplePriceVo>> getPeoplePrice() {
+        return houseInfoService.getPeoplePrice();
+    }
+
+    @Cacheable(value = "models", key = "#root.methodName")
+    @RequestMapping("/yearPrice")
+    public Map<String, List<YearPriceVo>> getYearPrice() {
+        return houseInfoService.getYearPriceGroupByYear();
     }
 }

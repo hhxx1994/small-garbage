@@ -23,7 +23,7 @@
         <div id="subWayCharts" style="height: 300px">图表加载失败</div>
       </el-col>
       <el-col :span="12" class="chart">
-        <div id="areaPrice2" style="height: 300px">图表加载失败</div>
+        <div id="peoplePrice" style="height: 300px">图表加载失败</div>
       </el-col>
     </el-row>
 
@@ -408,6 +408,14 @@
               fontWeight: 'normal',
             },
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           tooltip: {
             trigger: 'item',
             axisPointer: {
@@ -654,6 +662,203 @@
         myChart.setOption(option);
         myChart.hideLoading();
       },
+      getPeoplePriceInit(chartsData) {
+        const myChart = echarts.init(document.getElementById('peoplePrice'));
+        myChart.showLoading();
+        var dataBJ = chartsData['bjData'];
+
+        var dataGZ = chartsData['gzData'];
+
+        var dataSH = chartsData['shData'];
+
+        var dataSZ = chartsData['szData'];
+
+        var schema = [
+          {name: 'date', index: 0, text: '户数'},
+        ];
+
+        var itemStyle = {
+          normal: {
+            opacity: 0.8,
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        };
+        let option = {
+          title: {
+            text: "建年-均价比"
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          backgroundColor: '#404a59',
+          color: [
+            '#dd4444', '#fec42c', '#80F1BE', '#243880'
+          ],
+          legend: {
+            y: 'top',
+            data: ['北京', '上海', '深圳', '广州'],
+            textStyle: {
+              color: '#fff',
+              fontSize: 16
+            }
+          },
+          grid: {
+            x: '10%',
+            x2: 150,
+            y: '18%',
+            y2: '10%'
+          },
+          tooltip: {
+            padding: 10,
+            backgroundColor: '#222',
+            borderColor: '#777',
+            borderWidth: 1,
+            formatter: function (obj) {
+              var value = obj.value;
+              return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+                + obj.seriesName + ' ' + value[0] + '年'
+                + '</div>'
+                + schema[0].text + '：' + value[1] + '<br>'
+                ;
+            }
+          },
+          xAxis: {
+            type: 'value',
+            name: '年',
+            nameGap: 16,
+            nameTextStyle: {
+              color: '#fff',
+              fontSize: 14
+            },
+            min:1999,
+            max:2017,
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#eee'
+              }
+            }
+          },
+          yAxis: {
+            type: 'value',
+            name: 'CNY/㎡',
+            nameLocation: 'end',
+            nameGap: 20,
+            min:15000,
+            nameTextStyle: {
+              color: '#fff',
+              fontSize: 16
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#eee'
+              }
+            },
+            splitLine: {
+              show: false
+            }
+          },
+          visualMap: [
+            {
+              left: 'right',
+              top: '10%',
+              dimension: 1,
+              min:20000,
+              max:80000,
+              itemHeight: 60,
+              calculable: true,
+              precision: 0.1,
+              text: ['圆形大小：CNY/㎡'],
+              textGap: 30,
+              textStyle: {
+                color: '#fff'
+              },
+              inRange: {
+                symbolSize: [1, 50]
+              },
+              outOfRange: {
+                symbolSize: [10, 70],
+                color: ['rgba(255,255,255,.2)']
+              },
+              controller: {
+                inRange: {
+                  color: ['#c23531']
+                },
+                outOfRange: {
+                  color: ['#444']
+                }
+              }
+            },
+            // {
+            //   left: 'right',
+            //   bottom: '5%',
+            //   dimension: 1,
+            //   itemHeight: 60,
+            //   min:0,
+            //   max:80000,
+            //   calculable: true,
+            //   precision: 0.1,
+            //   text: ['明暗：二氧化硫'],
+            //   textGap: 30,
+            //   textStyle: {
+            //     color: '#fff'
+            //   },
+            //   inRange: {
+            //     colorLightness: [1, 0.5]
+            //   },
+            //   outOfRange: {
+            //     color: ['rgba(255,255,255,.2)']
+            //   },
+            //   controller: {
+            //     inRange: {
+            //       color: ['#c23531']
+            //     },
+            //     outOfRange: {
+            //       color: ['#444']
+            //     }
+            //   }
+            // }
+          ],
+          series: [
+            {
+              name: '北京',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataBJ
+            },
+            {
+              name: '上海',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataSH
+            },
+            {
+              name: '深圳',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataSZ
+            },
+            {
+              name: '广州',
+              type: 'scatter',
+              itemStyle: itemStyle,
+              data: dataGZ
+            }
+          ]
+        };
+        myChart.setOption(option);
+        myChart.hideLoading();
+      },
     },
     mounted() {
       this.$nextTick(function () {
@@ -678,12 +883,38 @@
         });
         this.$http.get('/api/chartsData/subWayData').then((response) => {
           response = response.data;
-          let trueJson=response['true'];
-          let falseJson=response['false'];
-          let subway=[trueJson['lower'],trueJson['q1'],trueJson['median'],trueJson['q3'],trueJson['upper']];
-          let noSubway=[falseJson['lower'],falseJson['q1'],falseJson['median'],falseJson['q3'],falseJson['upper']];
-          let chartsData = {'subway':subway,'noSubway':noSubway};
+          let trueJson = response['true'];
+          let falseJson = response['false'];
+          let subway = [trueJson['lower'], trueJson['q1'], trueJson['median'], trueJson['q3'], trueJson['upper']];
+          let noSubway = [falseJson['lower'], falseJson['q1'], falseJson['median'], falseJson['q3'], falseJson['upper']];
+          let chartsData = {'subway': subway, 'noSubway': noSubway};
           this.getSubWayInit(chartsData)
+        });
+        this.$http.get('/api/chartsData/yearPrice').then((response) => {
+          response = response.data;
+          let gzData = [];
+          let szData = [];
+          let shData = [];
+          let bjData = [];
+          response['gz'].forEach(ele => {
+            gzData.push([ele['year'], ele['price'], ele['price']])
+          });
+          response['sz'].forEach(ele => {
+            szData.push([ele['year'], ele['price'], ele['price']])
+          });
+          response['sh'].forEach(ele => {
+            shData.push([ele['year'], ele['price'], ele['price']])
+          });
+          response['bj'].forEach(ele => {
+            bjData.push([ele['year'], ele['price'], ele['price']])
+          });
+          let chartsData = {
+            gzData,
+            shData,
+            szData,
+            bjData
+          };
+          this.getPeoplePriceInit(chartsData)
         });
 
 

@@ -10,14 +10,11 @@ import com.hhx.house.mapping.HouseInfoMapper;
 import com.hhx.house.mapping.RentInfoMapper;
 import com.hhx.house.mapping.SellInfoMapper;
 import com.hhx.house.model.Statistics;
-import com.hhx.house.vo.HouseAreaRatioVo;
-import com.hhx.house.vo.SubWayVo;
-import com.hhx.house.vo.UserStatVo;
+import com.hhx.house.vo.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -37,20 +34,17 @@ public class HouseInfoService {
 
     public static final String DOMAIN = ".lianjia.com";
     public static final Pattern PATTERN = Pattern.compile("(\\d+)\\D+(\\d+)");
+    public static final Pattern COMPILE = Pattern.compile("(\\d+)年");
     private Logger logger = LoggerFactory.getLogger(HouseInfoService.class);
     @Autowired
     private HouseInfoMapper houseInfoMapper;
-
     @Autowired
     private RentInfoMapper rentInfoMapper;
-
     @Autowired
     private SellInfoMapper sellInfoMapper;
-
     @Autowired
     private CommunityMapper communityMapper;
 
-    @Cacheable(value = "models", key = "#root.methodName")
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
         Map<String, List<HouseInfo>> map = Maps.newHashMap();
         for (int i = 0; i < AreaConst.AREAS.length; i++) {
@@ -69,7 +63,6 @@ public class HouseInfoService {
         return map;
     }
 
-    @Cacheable(value = "models", key = "#root.methodName")
     public Map<String, Map<String, Statistics>> getHouseInfoStatistics() {
         Map<String, List<HouseInfo>> map = houseInfoGroupByArea();
         Map<String, Map<String, Statistics>> data = Maps.newHashMap();
@@ -162,4 +155,81 @@ public class HouseInfoService {
         return map;
 
     }
+
+
+    public Map<String, List<PeoplePriceVo>> getPeoplePrice() {
+        Map<String, List<PeoplePriceVo>> map = Maps.newHashMap();
+        for (int i = 0; i < AreaConst.AREAS.length; i++) {
+            map.put(AreaConst.AREAS[i], Lists.newArrayList());
+        }
+        communityMapper.selectList(null).stream().collect(Collectors.groupingBy(community -> {
+            String link = community.getLink();
+            for (int i = 0; i < AreaConst.AREAS.length; i++) {
+                if (link.contains(AreaConst.AREAS[i] + DOMAIN)) {
+                    return AreaConst.AREAS[i];
+                }
+            }
+            return link;
+        })).forEach((k, v) -> {
+            v.forEach(community -> {
+                String num = community.getHouseNum();
+                int houseNum = Integer.parseInt(num.substring(0, num.length() - 1));
+                double price = Double.parseDouble(community.getPrice());
+                if (map.containsKey(k)) {
+                    map.get(k).add(new PeoplePriceVo(houseNum, price));
+                }
+            });
+        });
+        return map;
+    }
+
+    public Map<String, List<YearPriceVo>> getYearPrice() {
+        Map<String, List<YearPriceVo>> map = Maps.newHashMap();
+        for (int i = 0; i < AreaConst.AREAS.length; i++) {
+            map.put(AreaConst.AREAS[i], Lists.newArrayList());
+        }
+        houseInfoGroupByArea().forEach((k, v) -> {
+            v.stream().filter(houseInfo -> {
+                String floor = houseInfo.getFloor();
+                int year = 0;
+                Matcher matcher = COMPILE.matcher(floor);
+                if (matcher.find()) {
+                    year = Integer.parseInt(matcher.group(1));
+                }
+                return year >= 2000;
+            }).forEach(houseInfo -> {
+                String floor = houseInfo.getFloor();
+                int year = 0;
+                double total = Double.parseDouble(houseInfo.getUnitprice());
+                Matcher matcher = COMPILE.matcher(floor);
+                if (matcher.find()) {
+                    year = Integer.parseInt(matcher.group(1));
+                }
+                if (map.containsKey(k)) {
+                    map.get(k).add(new YearPriceVo(year, total));
+                }
+            });
+        });
+        return map;
+    }
+
+    public Map<String, List<YearPriceVo>> getYearPriceGroupByYear() {
+        Map<String, List<YearPriceVo>> map = Maps.newHashMap();
+        for (int i = 0; i < AreaConst.AREAS.length; i++) {
+            map.put(AreaConst.AREAS[i], Lists.newArrayList());
+        }
+        getYearPrice().forEach((k, v) -> {
+            Map<Integer, List<YearPriceVo>> collect = v.stream().collect(Collectors.groupingBy(YearPriceVo::getYear));
+            collect.forEach((k2, v2) -> {
+                Double total = v2.stream().map(YearPriceVo::getPrice).collect(Collectors.averagingDouble(item -> item));
+                if (map.containsKey(k)) {
+                    map.get(k).add(new YearPriceVo(k2, total));
+                }
+            });
+        });
+        return map;
+
+    }
+
+
 }

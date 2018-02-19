@@ -30,4 +30,14 @@ public class MyTest {
         System.out.println(v);
     }
 
+    @Test
+    public void test02(){
+        String s = "高楼层(共13层)2003年建板楼/天通苑";
+        Pattern compile = Pattern.compile("(\\d+)年");
+        Matcher matcher = compile.matcher(s);
+        if(matcher.find()){
+            System.out.println(matcher.group(1));
+        }
+    }
+
 }
