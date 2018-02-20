@@ -83,4 +83,10 @@ public class EchartsController {
     public Map<String, List<YearPriceVo>> getYearPrice() {
         return houseInfoService.getYearPriceGroupByYear();
     }
+
+    @Cacheable(value = "models", key = "#root.methodName")
+    @RequestMapping("/locationData")
+    public List<LocationDataVo> getLocationData() {
+        return houseInfoService.getLocationData();
+    }
 }

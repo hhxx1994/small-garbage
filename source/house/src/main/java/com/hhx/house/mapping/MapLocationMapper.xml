@@ -21,4 +21,17 @@
     select * from maplocation
   </select>
 
+  <resultMap id="LocationDataMap" type="com.hhx.house.dto.LocationDataDto">
+    <!--<result column="gcj_lng"  property="gcjLng" />-->
+    <!--<result column="gcj_lat"  property="gcjLat" />-->
+    <result column="lng"  property="gcjLng" />
+    <result column="lat"  property="gcjLat" />
+    <result column="community"  property="community" />
+    <result column="price"  property="price" />
+  </resultMap>
+  <select id="getLocationData" resultMap="LocationDataMap" >
+    <!--SELECT h.*,m.gcj_lng,m.gcj_lat FROM (SELECT AVG(unitPrice) price,community FROM houseinfo GROUP BY community) h JOIN maplocation m ON h.community=m.name AND m.status=1-->
+    SELECT h.*,m.lng,m.lat FROM (SELECT AVG(unitPrice) price,community FROM houseinfo GROUP BY community) h JOIN maplocation m ON h.community=m.name AND m.status=1
+  </select>
+
 </mapper>

@@ -4,12 +4,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
+import com.hhx.house.entity.Gps;
 import com.hhx.house.entity.HouseInfo;
-import com.hhx.house.mapping.CommunityMapper;
-import com.hhx.house.mapping.HouseInfoMapper;
-import com.hhx.house.mapping.RentInfoMapper;
-import com.hhx.house.mapping.SellInfoMapper;
+import com.hhx.house.mapping.*;
 import com.hhx.house.model.Statistics;
+import com.hhx.house.utils.PositionUtil;
 import com.hhx.house.vo.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -44,6 +45,8 @@ public class HouseInfoService {
     private SellInfoMapper sellInfoMapper;
     @Autowired
     private CommunityMapper communityMapper;
+    @Autowired
+    private MapLocationMapper mapLocationMapper;
 
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
         Map<String, List<HouseInfo>> map = Maps.newHashMap();
@@ -228,6 +231,34 @@ public class HouseInfoService {
             });
         });
         return map;
+
+    }
+
+    public List<LocationDataVo> getLocationData() {
+        return mapLocationMapper.getLocationData().stream().map(mapLocation -> {
+            String community = mapLocation.getCommunity();
+            double price = mapLocation.getPrice();
+            double gcjLat = mapLocation.getGcjLat();
+            double gcjLng = mapLocation.getGcjLng();
+            Gps gps = PositionUtil.bd09_To_Gps84(gcjLat, gcjLng);
+            return new LocationDataVo(community.trim(), price, Arrays.asList(gps.getWgLon(), gps.getWgLat()));
+        })
+                .filter(getLocationDataVoPredicate(0, 117.30d, 115.25d, 114.3d, 112.57d, 122.2d, 120.85d, 114.37d,
+                        113.52d))
+                .filter(getLocationDataVoPredicate(1, 41.03d, 39.26d, 23.56d, 22.26d, 31.8833d, 30.6667d,
+                        22.52d, 22.27d))
+                .collect(Collectors.toList());
+
+    }
+
+    private Predicate<LocationDataVo> getLocationDataVoPredicate(int i, double v, double v2, double v3, double v4,
+                                                                 double v5, double v6, double v7, double v8) {
+        return locationDataVo ->
+                (locationDataVo.getCoords().get(i) < v && locationDataVo.getCoords().get(i) > v2) ||
+                        (locationDataVo.getCoords().get(i) < v3 && locationDataVo.getCoords().get(i) > v4) ||
+                        (locationDataVo.getCoords().get(i) < v5 && locationDataVo.getCoords().get(i) > v6) ||
+                        (locationDataVo.getCoords().get(i) < v7 && locationDataVo.getCoords().get(i) > v8);
+
 
     }
 
