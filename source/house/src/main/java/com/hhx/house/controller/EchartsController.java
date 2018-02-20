@@ -99,4 +99,18 @@ public class EchartsController {
     public List<CommunityPrice> getCommunity(String area) {
         return communityService.getCommunity(area);
     }
+
+    /**
+     * lngMin=120.85&lngMax=122.2&latMin=30.6667&latMax=31.8833   sh
+     * @param lngMin
+     * @param lngMax
+     * @param latMin
+     * @param latMax
+     * @return
+     */
+    @Cacheable(value = "models", key = "#root.methodName + #root.args[0]")
+    @RequestMapping("/locationData2")
+    public List<LocationDataVo> getLocationData2(double lngMin, double lngMax,double latMin, double latMax) {
+        return  houseInfoService.getLocationData2(lngMin,lngMax,latMin,  latMax);
+    }
 }

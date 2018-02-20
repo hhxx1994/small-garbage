@@ -10,6 +10,7 @@ import Index from './views/index/index';
 import Table from './views/table/table';
 import Form from './views/form/form';
 import ue from './views/editor/editor';
+import picture from './views/picture/picture';
 import 'font-awesome/css/font-awesome.min.css';
 import Mock from './mock/mock';
 
@@ -51,7 +52,8 @@ let routes = [
       {path: '/index', component: Index, name: '统计图表', class: 'fa-line-chart'},
       {path: '/table', component: Table, name: '小区分布图', class: 'fa-line-chart'},
       {path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'},
-      {path: '/editor', component: ue, name: '地区热力图', class: 'fa-plug'}
+      {path: '/editor', component: ue, name: '地区热力图', class: 'fa-plug'},
+      {path: '/picture', component: picture, name: '地区热力图2', class: 'fa-plug'}
     ]
   }
 ];
