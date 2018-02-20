@@ -1,60 +1,105 @@
 <template>
-  <div class="components-container">
-    <div class="info">UE编辑器示例<br>需要使用编辑器时，调用UE公共组件即可。可设置填充内容defaultMsg，配置信息config(宽度和高度等)，可调用组件中获取内容的方法。支持页面内多次调用。</div>
-    <button @click="getUEContent()">获取内容</button>
-    <button @click="getUEContentTxt()">获取无文本内容</button>
-    <div class="editor-container">
-      <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
-      <UE :defaultMsg=defaultMsg :config=config :id=ue2 ref="ue2"></UE>
-    </div>
+  <div class="chart-container">
+    <el-row>
+      <el-col :span="12" class="chart chart_left">
+        <div id="allmap3" style="height: 500px">图表加载失败</div>
+      </el-col>
+    </el-row>
+
+
   </div>
 </template>
-<style>
-  .info{
-    border-radius: 10px;
-    line-height: 20px;
-    padding: 10px;
-    margin: 10px;
-    background-color: #ffffff;
-  }
-</style>
 <script>
-  import UE from '../../components/ue/ue.vue';
+  import echarts from 'echarts'
+  import beijing from 'echarts/map/json/province/beijing'
+
   export default {
-    components: {UE},
     data() {
-      return {
-        defaultMsg: '<span style="orphans: 2; widows: 2; font-size: 22px; font-family: KaiTi_GB2312; background-color: rgb(229, 51, 51);"><strong>夏钧姗：成功的投资需具备哪些心态和掌握哪些重要止损位</strong></span>',
-        config: {
-          initialFrameWidth: null,
-          initialFrameHeight: 350
-        },
-        ue1: "ue1", // 不同编辑器必须不同的id
-        ue2: "ue2"
-      }
+      return {};
     },
     methods: {
-      getUEContent() {
-        let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-        this.$notify({
-          title: '获取成功，可在控制台查看！',
-          message: content,
-          type: 'success'
+      getUserChartInit3(response) {
+        let chartsData=[];
+        response.forEach(ele => {
+          chartsData.push({name:ele['name'],value:ele['price']})
         });
-        console.log(content)
+        echarts.registerMap('bj', beijing);
+        var dom = document.getElementById('allmap3');
+        const myChart = echarts.init(dom);
+        myChart.showLoading();
+        var option = {
+          backgroundColor: '#ffffff',
+          title: {
+            text: "北京市各区房价",
+            left: 'center',
+            textStyle: {
+              color: '#000'
+            }
+          },
+          visualMap: {
+            min: 0,
+            max: 125000,
+            dimension: 0,
+            left: 'left',
+            top: 'top',
+            text: ['HIGH', 'LOW'], // 文本，默认为数值文本
+            calculable: true,
+            inRange: {
+              color: ['#3EACE5', '#F02FC2']
+            }
+          },
+          series: [{
+            type: 'map',
+            mapType: 'bj',
+            label: {
+              normal: {
+                show: false,
+              },
+              emphasis: {
+                textStyle: {
+                  color: 'rgba(255, 255, 255, 0.8)'
+                }
+              }
+            },
+            itemStyle: {
+
+              normal: {
+                borderColor: '#fff',
+                borderWidth: 1,
+                areaColor: '#000',
+              },
+              emphasis: {
+                areaColor: '#EABBFF',
+                borderColor: 'rgb(255,222,254)',
+                borderWidth: 1,
+              }
+            },
+            animation: false,
+            data: chartsData
+            // animationDurationUpdate: 1000,
+            // animationEasingUpdate: 'quinticInOut'
+          }]
+        };
+
+        myChart.setOption(option);
+
+        myChart.hideLoading();
+
       },
-      getUEContentTxt() {
-        let content = this.$refs.ue.getUEContentTxt(); // 调用子组件方法
-        this.$notify({
-          title: '获取成功，可在控制台查看！',
-          message: content,
-          type: 'success'
+    },
+    mounted() {
+      this.$nextTick(function () {
+        this.$http.get('/api/chartsData/communityByBj').then((response) => {
+          response = response.data;
+          this.getUserChartInit3(response);
         });
-        console.log(content)
-      }
+      })
     }
-  };
+  }
 </script>
-
-
-
+<style>
+  .form-section {
+    padding: 10px;
+    width: 500px;
+  }
+</style>

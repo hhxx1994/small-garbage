@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.model.Statistics;
+import com.hhx.house.service.CommunityService;
 import com.hhx.house.service.HouseInfoService;
 import com.hhx.house.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class EchartsController {
 
     @Autowired
     private HouseInfoService houseInfoService;
+
+    @Autowired
+    private CommunityService communityService;
 
     @Cacheable(value = "models", key = "#root.methodName")
     @RequestMapping("/houseInfo")
@@ -88,5 +92,11 @@ public class EchartsController {
     @RequestMapping("/locationData")
     public List<LocationDataVo> getLocationData() {
         return houseInfoService.getLocationData();
+    }
+
+    @Cacheable(value = "models", key = "#root.methodName")
+    @RequestMapping("/communityByBj")
+    public List<CommunityPrice> getCommunityByBj() {
+        return communityService.getCommunityByBj();
     }
 }

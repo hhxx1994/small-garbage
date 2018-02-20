@@ -163,7 +163,6 @@
           },
           series : [
             {
-              name: '小区分布',
               type: 'scatter',
               coordinateSystem: 'bmap',
               data: convertData(data),
@@ -189,7 +188,6 @@
               }
             },
             {
-              name: 'Top 10',
               type: 'effectScatter',
               coordinateSystem: 'bmap',
               data: convertData(data.sort(function (a, b) {
