@@ -108,7 +108,7 @@ public class EchartsController {
      * @param latMax
      * @return
      */
-  //  @Cacheable(value = "models", key = "#root.methodName + #root.args[0]")
+    @Cacheable(value = "models", key = "#root.methodName + #root.args[0]+#root.args[1]+#root.args[2]+#root.args[3]")
     @RequestMapping("/locationData2")
     public List<LocationDataVo> getLocationData2(double lngMin, double lngMax,double latMin, double latMax) {
         return  houseInfoService.getLocationData2(lngMin,lngMax,latMin,  latMax);
