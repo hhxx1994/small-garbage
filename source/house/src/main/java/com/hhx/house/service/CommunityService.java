@@ -51,9 +51,9 @@ public class CommunityService {
         return map;
     }
 
-    public List<CommunityPrice> getCommunityByBj() {
+    public List<CommunityPrice> getCommunity(String area) {
         List<CommunityPrice> list = Lists.newArrayList();
-        getCommunityGroupByDistinct().get("bj").forEach((k, v) -> {
+        getCommunityGroupByDistinct().get(area).forEach((k, v) -> {
             String key = k;
             if (!k.contains("区")) {
                 key = k + "区";

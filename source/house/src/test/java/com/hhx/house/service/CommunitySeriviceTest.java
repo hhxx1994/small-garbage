@@ -28,7 +28,7 @@ public class CommunitySeriviceTest {
     public void getCommunityGroupByDistinct() {
         Map<String, Map<String, List<Community>>> communityGroupByDistinct = communitySerivice
                 .getCommunityGroupByDistinct();
-        communityGroupByDistinct.get("bj").forEach((k, v) -> System.out.println(k));
+        communityGroupByDistinct.get("sh").forEach((k, v) -> System.out.println(k));
 
     }
 }

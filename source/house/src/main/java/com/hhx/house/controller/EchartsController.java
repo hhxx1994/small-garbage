@@ -94,9 +94,9 @@ public class EchartsController {
         return houseInfoService.getLocationData();
     }
 
-    @Cacheable(value = "models", key = "#root.methodName")
-    @RequestMapping("/communityByBj")
-    public List<CommunityPrice> getCommunityByBj() {
-        return communityService.getCommunityByBj();
+    @Cacheable(value = "models", key = "#root.methodName + #root.args[0]")
+    @RequestMapping("/community")
+    public List<CommunityPrice> getCommunity(String area) {
+        return communityService.getCommunity(area);
     }
 }
