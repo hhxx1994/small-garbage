@@ -39,7 +39,7 @@ public class UserTagService {
     private List<WordTuple> list = Lists.newArrayList();
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
         Analyzer analyzer = null;
         Directory directory = null;
 
@@ -107,7 +107,11 @@ public class UserTagService {
                 analyzer.close();
             }
             if (directory != null) {
-                directory.close();
+                try {
+                    directory.close();
+                } catch (IOException e) {
+                    directory = null;
+                }
             }
         }
 
