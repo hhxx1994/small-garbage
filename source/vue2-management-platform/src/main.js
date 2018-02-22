@@ -19,6 +19,8 @@ import '../static/UE/ueditor.all.min.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
+import login from "./views/user/login"
+
 Mock.mockData();
 Vue.use(VueRouter);// 安装路由功能
 /* eslint-disable no-new */
@@ -55,6 +57,10 @@ let routes = [
       {path: '/editor', component: ue, name: '地区热力图', class: 'fa-plug'},
       {path: '/picture', component: picture, name: '地区热力图2', class: 'fa-plug'}
     ]
+  }  ,
+  {
+    path: '/login',
+    component: login,
   }
 ];
 let router = new VueRouter({

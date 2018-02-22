@@ -58,6 +58,12 @@ module.exports = {
         loader: 'vue'
       },
       {
+        test: /\.less$/,
+
+        loader: "style-loader!css-loader!less-loader",
+
+      },
+      {
         test: /\.js$/,
         loader: 'babel',
         include: [

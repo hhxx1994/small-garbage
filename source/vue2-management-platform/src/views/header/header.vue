@@ -3,23 +3,33 @@
     <header>
       <ul class="header-operations">
         <li>
-          <span class="header-lang is-active">{{user.name}}</span>
-          <span class="header-opacity">({{user.area}}/{{user.identity}})</span>
+          <el-button class="button" @click.native="tologin" type="danger" size="small" round>登录</el-button>
+          <el-button class="button" @click.native="greet" type="success" size="small" round>注册</el-button>
         </li>
         <li></li>
-      </ul></header>
+      </ul>
+    </header>
   </div>
 </template>
 <script>
+  import 'font-awesome/css/font-awesome.min.css';
+
   export default {
     props: {
-      user: {
-      }
+      user: {}
     },
-    data () {
-      return {
-      };
+    data() {
+      return {};
     },
+    methods: {
+
+
+      tologin() {
+        this.$router.push('/login')
+      },
+
+
+    }
   };
 </script>
 <style>
@@ -35,16 +45,19 @@
     box-sizing: border-box;
     position: fixed;
   }
+
   .header-logo {
     display: inline-block;
     vertical-align: middle;
   }
+
   .header-operations {
     display: inline-block;
     float: right;
     padding-right: 30px;
     height: 100%;
   }
+
   .header-operations li {
     color: #fff;
     display: inline-block;
@@ -54,12 +67,15 @@
     line-height: 80px;
     cursor: pointer;
   }
-  .header-operations li:first-child{
+
+  .header-operations li:first-child {
     cursor: default
   }
-  .header-opacity{
+
+  .header-opacity {
     opacity: .7;
   }
+
   .header-operations:after, header:after {
     display: inline-block;
     content: "";

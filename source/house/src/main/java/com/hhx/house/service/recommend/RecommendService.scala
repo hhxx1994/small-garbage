@@ -32,7 +32,7 @@ class RecommendService {
 
   @PostConstruct
   private def init = {
-    val sparkConf = new SparkConf().setAppName("MovieLensALS").setMaster("local[6]").set("spark.executor.memory", "2g")
+    val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[6]").set("spark.executor.memory", "2g")
     val sparkContext = new SparkContext(sparkConf)
     val ratings = userTagMapper.selectList(null).asScala.map(userTag => Rating(userTag.getUserId, userTag.getId, userTag.getScore.doubleValue()))
     val rdd = sparkContext.makeRDD(ratings)
