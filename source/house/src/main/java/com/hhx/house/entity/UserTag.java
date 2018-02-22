@@ -10,7 +10,13 @@ public class UserTag {
 
     private Integer userId;
 
-    private Integer houseId;
+    private String houseId;
+
+    private Integer status;
+
+    private Integer count;
+
+    private Integer score;
 
 
 }
