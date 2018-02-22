@@ -34,7 +34,10 @@
         <!--<table tableName="community" domainObjectName="Community" enableCountByExample="false"-->
                <!--enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <table tableName="hisprice" domainObjectName="Hisprice" enableCountByExample="false"
+        <table tableName="user" domainObjectName="User" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="usertag" domainObjectName="UserTag" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <!--<table tableName="houseinfo" domainObjectName="HouseInfo" enableCountByExample="false"-->
