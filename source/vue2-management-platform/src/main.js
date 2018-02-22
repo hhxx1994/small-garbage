@@ -20,6 +20,7 @@ import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
 import login from "./views/user/login"
+import regin from "./components/regin"
 
 Mock.mockData();
 Vue.use(VueRouter);// 安装路由功能
@@ -61,6 +62,10 @@ let routes = [
   {
     path: '/login',
     component: login,
+  },
+  {
+    path: '/regin',
+    component: regin,
   }
 ];
 let router = new VueRouter({

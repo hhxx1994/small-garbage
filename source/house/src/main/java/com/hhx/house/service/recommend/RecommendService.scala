@@ -30,7 +30,7 @@ class RecommendService {
   }
 
 
-  @PostConstruct
+//  @PostConstruct
   private def init = {
     val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[6]").set("spark.executor.memory", "2g")
     val sparkContext = new SparkContext(sparkConf)

@@ -1,6 +1,8 @@
 <template>
   <div class="section">
-
+    <div class="top">
+      <Back></Back>
+    </div>
     <el-form
       :model="LoginForm"
       ref="LoginForm"
