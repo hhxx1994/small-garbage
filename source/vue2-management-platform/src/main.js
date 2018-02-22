@@ -21,7 +21,7 @@ import '../static/UE/ueditor.parse.min.js'
 
 import login from "./views/user/login"
 import regin from "./components/regin"
-
+import choseTag from "./components/choseTag"
 Mock.mockData();
 Vue.use(VueRouter);// 安装路由功能
 /* eslint-disable no-new */
@@ -66,6 +66,10 @@ let routes = [
   {
     path: '/regin',
     component: regin,
+  },
+  {
+    path: '/choseTag',
+    component: choseTag,
   }
 ];
 let router = new VueRouter({

@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Service
 public class UserTagService {
-    private List<String> tags = Arrays.asList("花园", "朝南", "通透", "采光", "电梯", "安静", "安静", "精装修", "高层", "复式", "地铁", "温馨");
+    private List<String> tags = Arrays.asList("花园", "朝南", "通透", "采光", "电梯", "安静", "精装修", "高层", "复式", "地铁", "温馨");
 
     @Autowired
     private HouseInfoMapper houseInfoMapper;

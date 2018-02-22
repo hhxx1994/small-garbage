@@ -160,7 +160,7 @@ export default {
             // 应该这样就行了把
             //this.$store.dispatch('login')
             // 跳转到我的信息的页面
-            this.$router.push('/')
+            this.$router.push('/choseTag')
           })
         } else {
           console.log('submit err')
