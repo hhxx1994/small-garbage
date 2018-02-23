@@ -56,7 +56,9 @@
   import {LoginUser} from '../../api/api'
 
   export default {
-
+    props: {
+      user: {}
+    },
     components: {
       Back
     },
@@ -101,29 +103,28 @@
             }
             // 调用axios登录接口
             LoginUser(LoginParams).then(res => {
-              console.log(res)
               this.logining = false
               // 根据返回的code判断是否成功
-              let {code, msg, user} = res.data
-              if (code !== 200) {
-                this.$message({
-                  type: 'error',
-                  message: msg
-                })
-              } else {
-                this.$message({
-                  type: 'success',
-                  message: msg
-                })
-                // 将返回的数据注入sessionStorage
-                sessionStorage.setItem('user', JSON.stringify(user))
-                // 在这里挂上，官方说的分发，登录的action
-                // 应该这样就行了把
-                this.$store.dispatch('login')
-                // console.log(user)
-                // 跳转到我的信息的页面
-                this.$router.push('/manger/send')
-              }
+              let user = res.data
+              // if (code !== 200) {
+              //   this.$message({
+              //     type: 'error',
+              //     message: msg
+              //   })
+              // } else {
+              //   this.$message({
+              //     type: 'success',
+              //     message: msg
+              //   })
+              // 将返回的数据注入sessionStorage
+              sessionStorage.setItem('user', JSON.stringify(user))
+              // 在这里挂上，官方说的分发，登录的action
+              // 应该这样就行了把
+              this.$store.dispatch('login')
+              // console.log(user)
+              // 跳转到我的信息的页面
+              this.$router.push('/')
+              //}
             })
           } else {
             console.log('submit err')

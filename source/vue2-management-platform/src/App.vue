@@ -1,6 +1,6 @@
 <template>
   <el-row class="container" style="height: 100%">
-    <v-header :user="user"></v-header>
+    <v-header></v-header>
     <el-col :span="24" class="main">
       <el-row>
         <el-menu :default-active="$route.path" class="mar-l el-menu-vertical-demo el-col el-col-3" light router>
@@ -23,20 +23,19 @@
 <script>
   import header from './views/header/header.vue';
 
-  const ERR_OK = "000";
+  //const ERR_OK = "000";
   export default {
     data() {
       return {
-        user: {}
       };
     },
     created() {
-      this.$http.get('/api/user').then((response) => {
-        response = response.data;
-        if (response.code === ERR_OK) {
-          this.user = response.datas;
-        }
-      });
+      // this.$http.get('/api/user').then((response) => {
+      //   response = response.data;
+      //   if (response.code === ERR_OK) {
+      //     this.user = response.datas;
+      //   }
+      // });
     },
     beforeCreate() {
       if (this.$route.path === '/') {

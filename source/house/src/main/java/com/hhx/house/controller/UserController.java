@@ -36,11 +36,8 @@ public class UserController {
         User user = new User();
         user.setName(username);
         user.setPassword(password);
-        Integer status = userMapper.insert(user);
-        if (status == 1) {
-            return user;
-        }
-        return null;
+        userMapper.insertAndGetId(user);
+        return user;
     }
 
     @RequestMapping("label")
@@ -52,5 +49,13 @@ public class UserController {
     public void getTags(String[] tags, Integer userId) {
         asyncTask.batchInsertUserTags(tags, userId);
     }
+    @RequestMapping("login")
+    public User login(String username, String password) {
+        User user = new User();
+        user.setName(username);
+        user.setPassword(password);
+        return userMapper.selectOne(user);
+    }
+
 
 }

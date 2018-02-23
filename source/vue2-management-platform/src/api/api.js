@@ -13,6 +13,9 @@ export const ReginUser = params => {
 }
 // 登录接口
 export const LoginUser = params => {
+  let param = new URLSearchParams();
+  param.append("username", params['username']);
+  param.append("password", params['password']);
   return axios.get(`${base}/login`, {params: params})
 }
 

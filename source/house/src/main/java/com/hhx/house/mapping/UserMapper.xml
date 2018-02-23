@@ -9,5 +9,9 @@
   <sql id="Base_Column_List" >
     id, name, password
   </sql>
+  <insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="userId" parameterType="com.hhx.house.entity.User">
+    insert into user(name,password)
+    values(#{user.name},#{user.password})
+  </insert>
 
 </mapper>

@@ -22,12 +22,15 @@ import '../static/UE/ueditor.parse.min.js'
 import login from "./views/user/login"
 import regin from "./components/regin"
 import choseTag from "./components/choseTag"
-Mock.mockData();
+import Vuex from 'vuex'
+import store from './vuex/store'
+//Mock.mockData();
 Vue.use(VueRouter);// 安装路由功能
 /* eslint-disable no-new */
 //Vue.use(VueRouter);
 Vue.prototype.$http = axios;
 Vue.use(ElementUI);
+Vue.use(Vuex)
 
 // 后端对比cookies判断是否登录，凡接口response的header带有x-auth-token的即未登录，跳转首页。
 // Vue.http.interceptors.push((request, next) => {
@@ -58,7 +61,7 @@ let routes = [
       {path: '/editor', component: ue, name: '地区热力图', class: 'fa-plug'},
       {path: '/picture', component: picture, name: '地区热力图2', class: 'fa-plug'}
     ]
-  }  ,
+  },
   {
     path: '/login',
     component: login,
@@ -78,7 +81,7 @@ let router = new VueRouter({
   routes
 });
 let app = new Vue({
-  router
-
+  router,
+  store,
 }).$mount('#app');
 export default app;

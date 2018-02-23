@@ -3,8 +3,13 @@
     <header>
       <ul class="header-operations">
         <li>
-          <el-button class="button" @click.native="tologin" type="danger" size="small" round>登录</el-button>
-          <el-button class="button" @click.native="toRegin" type="success" size="small" round>注册</el-button>
+          <span v-if="user">
+            <span class="header-lang is-active">用户：{{user.name}}</span>
+          </span>
+          <span v-else>
+            <el-button class="button" @click.native="tologin" type="danger" size="small" round>登录</el-button>
+            <el-button class="button" @click.native="toRegin" type="success" size="small" round>注册</el-button>
+          </span>
         </li>
         <li></li>
       </ul>
@@ -15,23 +20,22 @@
   import 'font-awesome/css/font-awesome.min.css';
 
   export default {
-    props: {
-      user: {}
-    },
     data() {
       return {};
     },
     methods: {
-
-
       tologin() {
         this.$router.push('/login')
       },
       toRegin() {
         this.$router.push('/regin')
       },
-
-
+    },
+    //获取store的User数据
+    computed: {
+      user() {
+        return this.$store.state.user
+      },
     }
   };
 </script>
