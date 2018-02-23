@@ -12,7 +12,6 @@ import Form from './views/form/form';
 import ue from './views/editor/editor';
 import picture from './views/picture/picture';
 import 'font-awesome/css/font-awesome.min.css';
-import Mock from './mock/mock';
 
 import '../static/UE/ueditor.config.js'
 import '../static/UE/ueditor.all.min.js'

@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +89,7 @@ public class MyTest {
             // 搜索过程**********************************
             // 实例化搜索器
             ireader = DirectoryReader.open(directory);
-           isearcher = new IndexSearcher(ireader);
+            isearcher = new IndexSearcher(ireader);
             IndexReader indexReader = isearcher.getIndexReader();
 
 
@@ -107,7 +108,6 @@ public class MyTest {
                 }
                 System.out.println(iterator.docFreq());
             }
-
 
 
         } catch (CorruptIndexException e) {
@@ -132,6 +132,11 @@ public class MyTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void streamTest() {
+        Arrays.asList(1,2,3,4).stream().map(item->item*100).forEach(System.out::println);
     }
 
 }

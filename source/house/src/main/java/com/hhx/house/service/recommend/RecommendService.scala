@@ -6,6 +6,7 @@ import com.hhx.house.mapping.UserTagMapper
 import org.apache.spark.mllib.recommendation.{ALS, MatrixFactorizationModel, Rating}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
 import scala.collection.JavaConverters._
@@ -22,6 +23,7 @@ class RecommendService {
   @Autowired
   private var userTagMapper: UserTagMapper = _
 
+  private var sparkContext: SparkContext = _
 
   private var matrixFactorizationModel: MatrixFactorizationModel = _
 
@@ -30,13 +32,19 @@ class RecommendService {
   }
 
 
-//  @PostConstruct
+  @PostConstruct
   private def init = {
     val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[6]").set("spark.executor.memory", "2g")
-    val sparkContext = new SparkContext(sparkConf)
+    sparkContext = new SparkContext(sparkConf)
+    trainData
+  }
+
+  @Scheduled(cron="0 0 3 1/1 * ?")
+  private def trainData = {
     val ratings = userTagMapper.selectList(null).asScala.map(userTag => Rating(userTag.getUserId, userTag.getId, userTag.getScore.doubleValue()))
     val rdd = sparkContext.makeRDD(ratings)
     matrixFactorizationModel = ALS.train(rdd, 100, 10, 0.1)
   }
+
 
 }

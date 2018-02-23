@@ -22,5 +22,12 @@
     houseID, title, link, community, years, housetype, square, direction, floor, taxtype, 
     totalPrice, unitPrice, followInfo, decoration, validdate
   </sql>
+  <select id="findHouseInfoListByIds" resultMap="BaseResultMap">
+    SELECT * from houseinfo
+    WHERE houseID in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
 
 </mapper>

@@ -8,6 +8,7 @@ import com.hhx.house.entity.Gps;
 import com.hhx.house.entity.HouseInfo;
 import com.hhx.house.mapping.*;
 import com.hhx.house.model.Statistics;
+import com.hhx.house.service.recommend.HouseRecommendService;
 import com.hhx.house.utils.PositionUtil;
 import com.hhx.house.vo.*;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +48,9 @@ public class HouseInfoService {
     private CommunityMapper communityMapper;
     @Autowired
     private MapLocationMapper mapLocationMapper;
+
+    @Autowired
+    private HouseRecommendService houseRecommendService;
 
     public Map<String, List<HouseInfo>> houseInfoGroupByArea() {
         Map<String, List<HouseInfo>> map = Maps.newHashMap();
@@ -263,7 +267,7 @@ public class HouseInfoService {
 
     }
 
-    public List<LocationDataVo> getLocationData2(double lngMin, double lngMax,double latMin, double latMax) {
+    public List<LocationDataVo> getLocationData2(double lngMin, double lngMax, double latMin, double latMax) {
         return mapLocationMapper.getLocationData().stream().map(mapLocation -> {
             String community = mapLocation.getCommunity();
             double price = mapLocation.getPrice();
@@ -276,6 +280,11 @@ public class HouseInfoService {
                 .filter(locationDataVo -> locationDataVo.getCoords().get(1) > latMin && locationDataVo.getCoords().get(1) < latMax)
                 .collect(Collectors.toList());
 
+    }
+
+    public List<HouseInfo> getHouseRecommend(int userId) {
+        List<String> houseIds = houseRecommendService.getHouseRecommend(userId);
+        return houseInfoMapper.findHouseInfoListByIds(houseIds);
     }
 
 
