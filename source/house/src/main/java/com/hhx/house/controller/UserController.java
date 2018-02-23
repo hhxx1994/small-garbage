@@ -1,8 +1,7 @@
 package com.hhx.house.controller;
 
-import com.google.common.collect.Lists;
+import com.hhx.house.async.AsyncTask;
 import com.hhx.house.entity.User;
-import com.hhx.house.entity.UserTag;
 import com.hhx.house.mapping.UserMapper;
 import com.hhx.house.mapping.UserTagMapper;
 import com.hhx.house.service.UserTagService;
@@ -10,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author hhx
@@ -21,6 +18,9 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private AsyncTask asyncTask;
 
     @Autowired
     private UserMapper userMapper;
@@ -50,21 +50,7 @@ public class UserController {
 
     @RequestMapping("tags")
     public void getTags(String[] tags, Integer userId) {
-        List<UserTag> userTags = Lists.newArrayList();
-        userTagService.getList().forEach(wordTuple -> {
-            Arrays.asList(tags).forEach(tag -> {
-                if (Objects.equals(wordTuple.getKey(), tag)) {
-                    wordTuple.getHouseId().forEach(id -> {
-                        UserTag userTag = new UserTag();
-                        userTag.setScore(4.5f);
-                        userTag.setUserId(userId);
-                        userTag.setHouseId(id);
-                        userTags.add(userTag);
-                    });
-                }
-            });
-        });
-        userTagMapper.insertBatch(userTags);
-
+        asyncTask.batchInsertUserTags(tags, userId);
     }
+
 }
