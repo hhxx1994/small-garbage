@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hhx.house.mapping.UserTagMapper">
-  <resultMap id="BaseResultMap" type="com.hhx.house.entity.UserTag">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="house_id"  property="houseId" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="count" jdbcType="INTEGER" property="count" />
-    <result column="score" jdbcType="INTEGER" property="score" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, user_id, house_id, status, count, score
-  </sql>
-  <select id="getUserTagByUserId" resultType="com.hhx.house.entity.UserTag">
-    select * from usertag where user_id=#{userId}
-  </select>
-  <select id="getUserTagExculedUserId" resultType="com.hhx.house.entity.UserTag">
-    select * from usertag where user_id != #{userId}
-  </select>
+    <resultMap id="BaseResultMap" type="com.hhx.house.entity.UserTag">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="house_id" property="houseId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="score" property="score"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, house_id, status, count, score
+    </sql>
+    <select id="getUserTagByUserId" resultType="com.hhx.house.entity.UserTag">
+        select * from usertag where user_id=#{userId}
+    </select>
+    <select id="getUserTagExculedUserId" resultType="com.hhx.house.entity.UserTag">
+        select * from usertag where user_id != #{userId}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO usertag(user_id,house_id,score,status)
+        VALUES
+        <foreach collection="userTags" item="userTag" separator=",">
+            (#{userTag.userId},#{userTag.houseId},#{userTag.score},2)
+        </foreach>
+    </insert>
 
 
 </mapper>

@@ -16,7 +16,7 @@ public class UserTag {
 
     private Integer count;
 
-    private Integer score;
+    private Float score;
 
 
 }

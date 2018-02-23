@@ -70,7 +70,7 @@ public class UserTest {
                 userTag.setHouseId(k);
                 userTag.setUserId(user.getId());
                 userTag.setStatus(1);
-                userTag.setScore(rand.nextInt(5) + 1);
+                userTag.setScore((new Integer(rand.nextInt(5) + 1)).floatValue());
                 userTagMapper.insert(userTag);
             });
         });
@@ -84,8 +84,8 @@ public class UserTest {
         long end = System.currentTimeMillis();
         Rating[] recommend1 = recommendService.recommend(3, 10);
         long end2 = System.currentTimeMillis();
-        System.out.println("------------------->"+(end-stat));
-        System.out.println("------------------->"+(end2-end));
+        System.out.println("------------------->" + (end - stat));
+        System.out.println("------------------->" + (end2 - end));
         Arrays.asList(recommend).forEach(System.out::println);
         Arrays.asList(recommend1).forEach(System.out::println);
 

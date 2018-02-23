@@ -1,15 +1,18 @@
 package com.hhx.house.controller;
 
+import com.google.common.collect.Lists;
 import com.hhx.house.entity.User;
+import com.hhx.house.entity.UserTag;
 import com.hhx.house.mapping.UserMapper;
-import com.hhx.house.model.WordTuple;
+import com.hhx.house.mapping.UserTagMapper;
 import com.hhx.house.service.UserTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * @author hhx
@@ -24,11 +27,12 @@ public class UserController {
     @Autowired
     private UserTagService userTagService;
 
+    @Autowired
+    private UserTagMapper userTagMapper;
+
 
     @RequestMapping("/regin")
     public User regin(String username, String password) {
-        System.out.println("username="+username);
-        System.out.println("password="+password);
         User user = new User();
         user.setName(username);
         user.setPassword(password);
@@ -38,8 +42,29 @@ public class UserController {
         }
         return null;
     }
+
     @RequestMapping("label")
-    public List<String> getLabel(){
-       return userTagService.getList().stream().map(WordTuple::getKey).collect(Collectors.toList());
+    public List<String> getLabel() {
+        return userTagService.getTags();
+    }
+
+    @RequestMapping("tags")
+    public void getTags(String[] tags, Integer userId) {
+        List<UserTag> userTags = Lists.newArrayList();
+        userTagService.getList().forEach(wordTuple -> {
+            Arrays.asList(tags).forEach(tag -> {
+                if (Objects.equals(wordTuple.getKey(), tag)) {
+                    wordTuple.getHouseId().forEach(id -> {
+                        UserTag userTag = new UserTag();
+                        userTag.setScore(4.5f);
+                        userTag.setUserId(userId);
+                        userTag.setHouseId(id);
+                        userTags.add(userTag);
+                    });
+                }
+            });
+        });
+        userTagMapper.insertBatch(userTags);
+
     }
 }

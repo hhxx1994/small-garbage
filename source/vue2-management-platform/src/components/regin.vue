@@ -84,17 +84,6 @@ export default {
         return callback()
       }
     }
-    let telCheck = (rule, value, callback) => {
-      if (value === '') {
-        return callback(new Error('电话号码是必须的'))
-      } else if (!Number.isInteger(value)) {
-        return callback(new Error('电话号码必须是数字'))
-      } else if (value.toString().length !== 11) {
-        return callback(new Error('电话号码必须是11位数字'))
-      } else {
-        callback()
-      }
-    }
     return {
       ReginForm: {
         username: '',
