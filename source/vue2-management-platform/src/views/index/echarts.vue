@@ -223,7 +223,7 @@
                 {value: chartsData['focus'], name: '关注人数'},
                 {value: chartsData['sell'], name: '购买人数'},
                 {value: chartsData['watch'], name: '看房人数'},
-                {value: chartsData['rent'], name: '出租人数'}
+                {value: chartsData['rent'], name: '租房人数'}
               ].sort(function (a, b) {
                 return a.value - b.value;
               }),
@@ -401,7 +401,7 @@
         myChart.showLoading();
         let option = {
           title: {
-            text: '地铁与非地铁房房价分布',
+            text: '地铁与非地铁房价分布',
             x: 'center',
             y: 20,
             textStyle: {
