@@ -56,9 +56,9 @@ let routes = [
     children: [
       {path: '/index', component: Index, name: '统计图表', class: 'fa-line-chart'},
       {path: '/table', component: Table, name: '小区分布图', class: 'fa-line-chart'},
-      {path: '/form', component: Form, name: 'form', class: 'fa-newspaper-o'},
-      {path: '/editor', component: ue, name: '地区热力图', class: 'fa-plug'},
-      {path: '/picture', component: picture, name: '地区热力图2', class: 'fa-plug'}
+      {path: '/editor', component: ue, name: '各市分布图', class: 'fa-line-chart'},
+      {path: '/picture', component: picture, name: '热力图', class: 'fa-line-chart'},
+      {path: '/form', component: Form, name: '用户推荐', class: 'fa-newspaper-o'}
     ]
   },
   {

@@ -54,6 +54,14 @@
             text: '小区-房价',
             left: 'center'
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           tooltip : {
             trigger: 'item'
           },

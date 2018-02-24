@@ -51,6 +51,14 @@
               color: '#000'
             }
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           visualMap: {
             min: 0,
             max: 125000,
@@ -117,6 +125,14 @@
             left: 'center',
             textStyle: {
               color: '#000'
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
             }
           },
           visualMap: {
@@ -187,6 +203,14 @@
               color: '#000'
             }
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           visualMap: {
             min: 0,
             max: 125000,
@@ -253,6 +277,14 @@
             left: 'center',
             textStyle: {
               color: '#000'
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
             }
           },
           visualMap: {

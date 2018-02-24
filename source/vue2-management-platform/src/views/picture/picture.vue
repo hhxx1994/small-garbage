@@ -48,6 +48,13 @@
               fontSize: 30
             }
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           tooltip: {
             trigger: 'item',
             transitionDuration: 0,
@@ -265,6 +272,13 @@
               fontSize: 30
             }
           },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
           tooltip: {
             trigger: 'item',
             transitionDuration: 0,
@@ -480,6 +494,13 @@
             textStyle: {
               color: '#fff',
               fontSize: 30
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              restore: {show: true},
+              saveAsImage: {show: true}
             }
           },
           tooltip: {
@@ -736,6 +757,13 @@
             },
             formatter: function (params) {
               return params.name + ' : ' + params.value[2] + '元/平方米';
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              restore: {show: true},
+              saveAsImage: {show: true}
             }
           },
           animation: false,
