@@ -91,5 +91,15 @@ public class UserTest {
 
     }
 
+    @Test
+    public void userInsertTest(){
+        User user = new User();
+        user.setName("ccccccc");
+        user.setPassword("bbb");
+        int i = userMapper.insertAndGetId(user);
+        System.out.println(user);
+        System.out.println(i);
+    }
+
 
 }

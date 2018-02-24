@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,8 +37,9 @@ public class UserController {
         User user = new User();
         user.setName(username);
         user.setPassword(password);
-        userMapper.insertAndGetId(user);
-        return user;
+        user.setRegisterDate(new Date());
+        userMapper.insert(user);
+        return userMapper.selectOne(user);
     }
 
     @RequestMapping("label")

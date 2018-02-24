@@ -1,5 +1,6 @@
 package com.hhx.house.test;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -22,8 +23,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.DoubleStream;
 
 /**
  * @author hhx
@@ -150,6 +153,14 @@ public class MyTest {
         ZoneId zone = ZoneId.systemDefault();
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
         System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    }
+
+    @Test
+    public void randomDouble(){
+//        Random random = new Random();
+//        DoubleStream doubles = random.doubles(2.5d, 4d)
+        double v = RandomUtils.nextDouble(2.5d, 4d);
+       // System.out.println(v);
     }
 
 }

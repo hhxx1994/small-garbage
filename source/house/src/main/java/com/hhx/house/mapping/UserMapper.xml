@@ -10,7 +10,7 @@
   <sql id="Base_Column_List" >
     id, name, password,register_date
   </sql>
-  <insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="userId" parameterType="com.hhx.house.entity.User">
+  <insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.hhx.house.entity.User">
     insert into user(name,password,register_date)
     values(#{user.name},#{user.password},now())
   </insert>
