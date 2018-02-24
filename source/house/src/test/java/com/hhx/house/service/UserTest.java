@@ -101,5 +101,10 @@ public class UserTest {
         System.out.println(i);
     }
 
+    @Test
+    public void batchUpdate(){
+        userMapper.updateBatch(Arrays.asList(4,5,6));
+    }
+
 
 }
