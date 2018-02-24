@@ -31,20 +31,22 @@ class RecommendService {
     matrixFactorizationModel.recommendProducts(userId, num)
   }
 
+  def recommendProductsForUsers(num: Int): Array[Rating] = {
+    matrixFactorizationModel.recommendProductsForUsers(num).flatMap(_._2).top(num)(Ordering.by(_.rating))
+  }
+
 
   @PostConstruct
   private def init = {
-    val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[6]").set("spark.executor.memory", "2g")
+    val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[12]").set("spark.executor.memory", "2g")
     sparkContext = new SparkContext(sparkConf)
     trainData
   }
 
-  @Scheduled(cron="0 0 3 1/1 * ?")
+  @Scheduled(cron = "0 0 0 1/1 * ?")
   private def trainData = {
     val ratings = userTagMapper.selectList(null).asScala.map(userTag => Rating(userTag.getUserId, userTag.getId, userTag.getScore.doubleValue()))
     val rdd = sparkContext.makeRDD(ratings)
     matrixFactorizationModel = ALS.train(rdd, 100, 10, 0.1)
   }
-
-
 }

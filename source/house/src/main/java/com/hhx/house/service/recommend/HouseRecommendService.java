@@ -16,16 +16,27 @@ import java.util.stream.Collectors;
  */
 @Service
 public class HouseRecommendService {
+    public static final int NUM = 10;
     @Autowired
     private RecommendService recommendService;
 
     @Autowired
     private UserTagMapper userTagMapper;
+
     public List<String> getHouseRecommend(int userId) {
-        return Arrays.stream(recommendService.recommend(userId, 10))
+        return getProductIds(recommendService.recommend(userId, NUM));
+    }
+
+    public List<String> getRecommendProduct() {
+        return getProductIds(recommendService.recommendProductsForUsers(NUM));
+    }
+
+    private List<String> getProductIds(Rating[] recommend) {
+        return Arrays.stream(recommend)
                 .map(Rating::product)
                 .map(userTagMapper::selectById)
                 .map(UserTag::getHouseId)
                 .collect(Collectors.toList());
     }
+
 }

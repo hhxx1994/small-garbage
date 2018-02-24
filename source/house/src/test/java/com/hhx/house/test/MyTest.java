@@ -17,6 +17,10 @@ import org.junit.Test;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -136,7 +140,16 @@ public class MyTest {
 
     @Test
     public void streamTest() {
-        Arrays.asList(1,2,3,4).stream().map(item->item*100).forEach(System.out::println);
+        Arrays.asList(1, 2, 3, 4).stream().map(item -> item * 100).forEach(System.out::println);
+    }
+
+    @Test
+    public void testTime() {
+        java.util.Date date = new java.util.Date();
+        Instant instant = date.toInstant();
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+        System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
 }

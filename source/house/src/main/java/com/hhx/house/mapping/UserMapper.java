@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper  extends BaseMapper<User>{
 
-
     void insertAndGetId(@Param("user") User user);
 
 }

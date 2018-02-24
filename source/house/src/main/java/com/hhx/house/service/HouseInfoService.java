@@ -9,6 +9,7 @@ import com.hhx.house.entity.HouseInfo;
 import com.hhx.house.mapping.*;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.service.recommend.HouseRecommendService;
+import com.hhx.house.utils.DateUtils;
 import com.hhx.house.utils.PositionUtil;
 import com.hhx.house.vo.*;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -48,6 +52,9 @@ public class HouseInfoService {
     private CommunityMapper communityMapper;
     @Autowired
     private MapLocationMapper mapLocationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private HouseRecommendService houseRecommendService;
@@ -283,7 +290,14 @@ public class HouseInfoService {
     }
 
     public List<HouseInfo> getHouseRecommend(int userId) {
-        List<String> houseIds = houseRecommendService.getHouseRecommend(userId);
+        LocalDateTime registerDate = DateUtils.UDateToLocalDateTime(userMapper.selectById(userId).getRegisterDate());
+        LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+        List<String> houseIds = null;
+        if (registerDate.isAfter(time)) {
+            houseIds = houseRecommendService.getRecommendProduct();
+        } else {
+            houseIds = houseRecommendService.getHouseRecommend(userId);
+        }
         return houseInfoMapper.findHouseInfoListByIds(houseIds);
     }
 
