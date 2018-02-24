@@ -139,7 +139,7 @@
                 message: '注册成功'
               })
               let user = res.data
-              // console.log(user)
+             // console.log(user)
               // 将返回的数据注入内存
               sessionStorage.setItem('user', JSON.stringify(user))
               // 在这里挂上，官方说的分发，登录的action
@@ -147,6 +147,7 @@
               this.$store.dispatch('login')
               // 跳转到我的信息的页面
               this.$router.push('/choseTag')
+              //this.$router.push('/')
             })
           } else {
             console.log('submit err')

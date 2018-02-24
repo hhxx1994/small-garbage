@@ -39,7 +39,10 @@ public class UserController {
         user.setPassword(password);
         user.setRegisterDate(new Date());
         userMapper.insert(user);
-        return userMapper.selectOne(user);
+        User u = new User();
+        u.setName(username);
+        u.setPassword(password);
+        return userMapper.selectOne(u);
     }
 
     @RequestMapping("label")

@@ -59,6 +59,7 @@
           for(let i=0;i<param.length;i++){
             params.append("tags", param[i]);
           }
+         // console.log(this.$store.state)
           params.append("userId",this.$store.state.user.id);
           this.$http.post('/api/user/tags',params).then((response) => {
             this.$router.push('/')

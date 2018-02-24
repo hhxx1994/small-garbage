@@ -56,9 +56,6 @@
   import {LoginUser} from '../../api/api'
 
   export default {
-    props: {
-      user: {}
-    },
     components: {
       Back
     },
