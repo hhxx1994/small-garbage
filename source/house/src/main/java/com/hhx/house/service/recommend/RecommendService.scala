@@ -39,7 +39,7 @@ class RecommendService {
   }
 
 
- // @PostConstruct
+  @PostConstruct
   private def init = {
     val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[4]").set("spark.executor.memory", "2g")
     sparkContext = new SparkContext(sparkConf)
@@ -51,8 +51,8 @@ class RecommendService {
     */
   @Scheduled(cron = "0 0/5 * * * ?")
   private def trainData = {
-    val tags = userTagMapper.selectList(null)
-    val ratings = tags.asScala.map(userTag => Rating(userTag.getUserId, userTag.getId, userTag.getScore.doubleValue()))
+    val tags = userTagMapper.getTrainData
+    val ratings = tags.asScala.map(tag => Rating(tag.getUserId, tag.getId, tag.getCount + tag.getScore))
     val rdd = sparkContext.makeRDD(ratings)
     matrixFactorizationModel = ALS.train(rdd, 100, 10, 0.1)
     userMapper.updateBatch(tags.asScala.groupBy(_.getUserId).keys.toList.asJavaCollection)

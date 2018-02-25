@@ -55,9 +55,13 @@
     methods: {
       liClick(e) {
         let id=e.currentTarget.id
-        console.log(id)
-        console.log(this.scores[id])
-        console.log(this.scores)
+        let score=this.scores[id]
+        this.$http.get('/api/houseInfo/score?houseId=' + id+"&score="+score).then((response) => {
+          response = response.data;
+
+
+        });
+
       },
       changePage(currentPage) {
         this.getData(currentPage)

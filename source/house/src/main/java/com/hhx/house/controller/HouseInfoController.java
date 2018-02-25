@@ -10,7 +10,6 @@ import com.hhx.house.vo.HouseInfoListVo;
 import com.hhx.house.vo.HouseVo;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,10 +35,9 @@ public class HouseInfoController {
     @Autowired
     private UserTagMapper userTagMapper;
 
-    @Cacheable(value = "models", key = "#root.methodName + #root.args[0]")
     @RequestMapping("/list")
     public HouseInfoListVo houseInfoList(@RequestParam(defaultValue = "1") Integer currentPage,
-                                         @RequestParam(defaultValue = "1") Integer userId) {
+                                         @RequestParam(defaultValue = "10007") Integer userId) {
 
         Page<HouseInfo> page = new Page<>(currentPage, 10);
         List<String> imgs = houseInfoService.houseImg();
@@ -56,7 +54,7 @@ public class HouseInfoController {
             UserTag userTag = new UserTag();
             userTag.setUserId(userId);
             userTag.setHouseId(houseInfo.getHouseid());
-            userTag.setStatus(2);
+            userTag.setStatus(3);
             Float score = Optional.ofNullable(userTagMapper.selectOne(userTag)).map(t -> Optional.ofNullable(t.getScore()).orElse
                     (0f)).orElse(0f);
             houseVo.setScore(score);
@@ -64,5 +62,30 @@ public class HouseInfoController {
         });
         houseInfoListVo.setList(house);
         return houseInfoListVo;
+    }
+
+    @RequestMapping("/score")
+    public void score(float score, String houseId, @RequestParam(defaultValue = "10007") Integer userId) {
+        UserTag userTag = new UserTag();
+        userTag.setUserId(userId);
+        userTag.setHouseId(houseId);
+        UserTag tag = userTagMapper.selectOne(userTag);
+        if (tag == null) {
+            userTag.setCount(1);
+            userTag.setStatus(3);
+            userTag.setScore(score);
+            userTagMapper.insert(userTag);
+        } else {
+            tag.setScore(score);
+            Integer count = tag.getCount();
+            if (count == null) {
+                count = 0;
+            } else {
+                count += 1;
+            }
+            tag.setCount(count);
+            userTagMapper.updateById(tag);
+        }
+
     }
 }

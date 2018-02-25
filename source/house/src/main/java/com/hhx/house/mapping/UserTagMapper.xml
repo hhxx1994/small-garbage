@@ -19,6 +19,18 @@
         select * from usertag where user_id != #{userId}
     </select>
 
+    <resultMap id="TrainDataMap" type="com.hhx.house.model.TrainData">
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="house_id" property="houseId"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="score" property="score"/>
+        <result column="id" property="id"/>
+    </resultMap>
+
+    <select id="getTrainData" resultMap="TrainDataMap">
+        SELECT SUM(score) score,IFNULL(SUM(COUNT),0) COUNT,user_id,house_id,id FROM usertag GROUP BY user_id , house_id
+    </select>
+
     <insert id="insertBatch">
         INSERT INTO usertag(user_id,house_id,score,status)
         VALUES
