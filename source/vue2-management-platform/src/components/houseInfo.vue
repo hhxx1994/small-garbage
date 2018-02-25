@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <span v-for="item in houseInfo">
+    <span v-for="(item, index) in houseInfo">
       <el-row>
       <el-col :span="24">
         <ul>
@@ -19,7 +19,7 @@
           </li>
           <li @click="liClick($event)" :id="item['houseId']">
            <el-rate class="title"
-                    v-model="scores[item['houseId']]"
+                    v-model="houseInfo[index]['score']"
                     show-text>
           </el-rate>
           </li>
@@ -54,12 +54,10 @@
     },
     methods: {
       liClick(e) {
-        let id=e.currentTarget.id
-        let score=this.scores[id]
-        this.$http.get('/api/houseInfo/score?houseId=' + id+"&score="+score).then((response) => {
+        let id = e.currentTarget.id
+        let score = this.scores[id]
+        this.$http.get('/api/houseInfo/score?houseId=' + id + "&score=" + score).then((response) => {
           response = response.data;
-
-
         });
 
       },
@@ -70,10 +68,13 @@
         this.$http.get('/api/houseInfo/list?currentPage=' + currentPage).then((response) => {
           response = response.data;
           this.total = response['total']
+          this.houseInfo = []
+          this.scores = {}
           response['list'].forEach(ele => {
+            this.scores[`${ele['houseId']}`] = ele['score']
             this.houseInfo.push(ele)
-            this.scores["${ele['houseId']}"]=ele['score']
           })
+          console.log(this.scores)
 
         });
       }
