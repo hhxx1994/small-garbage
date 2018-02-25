@@ -116,6 +116,11 @@ class Rentinfo(BaseModel):
     updatedate = DateTimeField(default=datetime.datetime.now)
 
 
+class House_img(BaseModel):
+    img = CharField()
+    house_id = CharField(primary_key=True)
+
+
 def database_init():
     database.connect()
     database.create_tables([Community, Houseinfo, Hisprice, Sellinfo, Rentinfo], safe=True)

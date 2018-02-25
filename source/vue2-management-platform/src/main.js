@@ -9,6 +9,7 @@ import App from './App';
 import Index from './views/index/index';
 import Table from './views/table/table';
 import Form from './views/form/form';
+import Recommend from './components/recommend'
 import ue from './views/editor/editor';
 import picture from './views/picture/picture';
 import 'font-awesome/css/font-awesome.min.css';
@@ -58,7 +59,8 @@ let routes = [
       {path: '/editor', component: ue, name: '各市房价分布图', class: 'fa-line-chart'},
       {path: '/table', component: Table, name: '小区房价分布图', class: 'fa-line-chart'},
       {path: '/picture', component: picture, name: '房价热力图', class: 'fa-line-chart'},
-      {path: '/form', component: Form, name: '用户推荐', class: 'fa-newspaper-o'}
+      {path: '/recommend', component: Recommend, name: '用户推荐', class: 'fa-newspaper-o'},
+      {path: '/form', component: Form, name: '用户推荐2', class: 'fa-newspaper-o'}
     ]
   },
   {

@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
 import com.hhx.house.entity.Gps;
+import com.hhx.house.entity.HouseImg;
 import com.hhx.house.entity.HouseInfo;
 import com.hhx.house.entity.User;
 import com.hhx.house.mapping.*;
@@ -16,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,6 +48,9 @@ public class HouseInfoService {
     private CommunityMapper communityMapper;
     @Autowired
     private MapLocationMapper mapLocationMapper;
+    @Autowired
+    private HouseImgMapper houseImgMapper;
+
 
     @Autowired
     private UserMapper userMapper;
@@ -293,6 +298,16 @@ public class HouseInfoService {
         }
 
         return houseInfoMapper.findHouseInfoListByIds(houseIds);
+    }
+
+    @Cacheable(value = "models", key = "#root.methodName")
+    public List<String> houseImg() {
+        return houseImgMapper.selectList(null).stream()
+                .map(HouseImg::getImg)
+                .map(img -> {
+                    String[] split = img.split("/");
+                    return split[split.length - 1];
+                }).collect(Collectors.toList());
     }
 
 

@@ -119,6 +119,26 @@ def GetRentByRegionlist(regionlist=[u'xicheng']):
     logging.info("Run time: " + str(endtime - starttime))
 
 
+def insert_img():
+    model.House_img.insert({model.House_img.house_id: 'aa', model.House_img.img: 'bb'}).execute()
+
+
+def get_img():
+    for data in model.Houseinfo.select(model.Houseinfo.houseID, model.Houseinfo.link):
+        print data.link
+        source_code = misc.get_source_code(data.link)
+        soup = BeautifulSoup(source_code, 'html.parser')
+        li = soup.select("#thumbnail2 li")
+        if len(li) > 0:
+            img = li[0].get('data-src')
+            print img
+            try:
+                model.House_img.insert({model.House_img.house_id: data.houseID, model.House_img.img: img}).execute()
+            except Exception as e:
+                print(e)
+                continue
+
+
 def get_house_percommunity(communityname):
     url = BASE_URL + u"ershoufang/rs" + urllib2.quote(communityname.encode('utf8')) + "/"
     source_code = misc.get_source_code(url)

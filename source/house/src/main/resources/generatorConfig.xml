@@ -35,7 +35,7 @@
                <!--enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
 
-        <table tableName="usertag" domainObjectName="UserTag" enableCountByExample="false"
+        <table tableName="house_img" domainObjectName="HouseImg" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <!--<table tableName="houseinfo" domainObjectName="HouseInfo" enableCountByExample="false"-->

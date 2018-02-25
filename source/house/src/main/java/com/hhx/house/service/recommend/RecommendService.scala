@@ -1,5 +1,7 @@
 package com.hhx.house.service.recommend
 
+import javax.annotation.PostConstruct
+
 import com.hhx.house.mapping.{UserMapper, UserTagMapper}
 import org.apache.spark.mllib.recommendation.{ALS, MatrixFactorizationModel, Rating}
 import org.apache.spark.{SparkConf, SparkContext}
@@ -37,9 +39,9 @@ class RecommendService {
   }
 
 
-  // @PostConstruct
+ // @PostConstruct
   private def init = {
-    val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[12]").set("spark.executor.memory", "2g")
+    val sparkConf = new SparkConf().setAppName("HouseALS").setMaster("local[4]").set("spark.executor.memory", "2g")
     sparkContext = new SparkContext(sparkConf)
     trainData
   }
@@ -47,7 +49,7 @@ class RecommendService {
   /**
     * 5分钟训练一次
     */
-  @Scheduled(cron = "0 0/5 * * * ? ")
+  @Scheduled(cron = "0 0/5 * * * ?")
   private def trainData = {
     val tags = userTagMapper.selectList(null)
     val ratings = tags.asScala.map(userTag => Rating(userTag.getUserId, userTag.getId, userTag.getScore.doubleValue()))

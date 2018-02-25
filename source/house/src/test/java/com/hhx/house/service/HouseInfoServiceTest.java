@@ -1,7 +1,9 @@
 package com.hhx.house.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.collect.Lists;
 import com.hhx.house.HouseApplication;
+import com.hhx.house.entity.HouseInfo;
 import com.hhx.house.mapping.HouseInfoMapper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -155,5 +157,12 @@ public class HouseInfoServiceTest {
         }
 
 
+    }
+
+    @Test
+    public void pageTest(){
+        Page<HouseInfo> page = new Page<>(1,10);
+        int size = houseInfoMapper.houseInfoList(page).size();
+        System.out.println(size);
     }
 }

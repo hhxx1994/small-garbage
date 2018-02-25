@@ -12,7 +12,7 @@ def get_communitylist(city):
     return res
 
 
-if __name__ == "__main__":
+def main_method():
     regionlist = settings.REGIONLIST  # only pinyin support
     model.database_init()
     for city in settings.CTTYS:
@@ -29,3 +29,8 @@ if __name__ == "__main__":
         # core.GetSellByCommunitylist(communitylist)
     while True:
         pass
+
+
+if __name__ == "__main__":
+    # core.insert_img()
+    core.get_img()
