@@ -1,19 +1,19 @@
 package com.hhx.house.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hhx.house.constant.AreaConst;
 import com.hhx.house.constant.StatisticsConst;
-import com.hhx.house.entity.Gps;
-import com.hhx.house.entity.HouseImg;
-import com.hhx.house.entity.HouseInfo;
-import com.hhx.house.entity.User;
+import com.hhx.house.entity.*;
 import com.hhx.house.mapping.*;
 import com.hhx.house.model.Statistics;
 import com.hhx.house.service.recommend.HouseRecommendService;
 import com.hhx.house.utils.PositionUtil;
 import com.hhx.house.vo.*;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +50,9 @@ public class HouseInfoService {
     private MapLocationMapper mapLocationMapper;
     @Autowired
     private HouseImgMapper houseImgMapper;
+
+    @Autowired
+    private UserTagMapper userTagMapper;
 
 
     @Autowired
@@ -308,6 +311,49 @@ public class HouseInfoService {
                     String[] split = img.split("/");
                     return split[split.length - 1];
                 }).collect(Collectors.toList());
+    }
+
+    public HouseInfoListVo houseInfoList(Integer currentPage, Integer userId) {
+        Page<HouseInfo> page = new Page<>(currentPage, 10);
+        List<HouseInfo> houseInfos = houseInfoMapper.houseInfoList(page);
+        HouseInfoListVo houseInfoListVo = getHouseInfoListVo(userId, houseInfos);
+        houseInfoListVo.setTotal(houseInfoMapper.selectCount(null));
+        return houseInfoListVo;
+    }
+
+    public HouseInfoListVo recommendVo(int userId) {
+        List<HouseInfo> houseRecommend = getHouseRecommend(userId);
+        return getHouseInfoListVo(userId, houseRecommend);
+    }
+
+    private HouseInfoListVo getHouseInfoListVo(int userId, List<HouseInfo> houseRecommend) {
+        HouseInfoListVo houseInfoListVo = new HouseInfoListVo();
+        List<HouseVo> house = new ArrayList<>();
+        List<String> imgs = houseImg();
+        houseRecommend.forEach(houseInfo -> {
+            HouseVo houseVo = new HouseVo();
+            houseVo.setLink(houseInfo.getLink());
+            houseVo.setTitle(houseInfo.getTitle());
+            houseVo.setHouseId(houseInfo.getHouseid());
+            int index = RandomUtils.nextInt(0, imgs.size());
+            houseVo.setImg("/static/img/" + imgs.get(index));
+            UserTag userTag = new UserTag();
+            userTag.setUserId(userId);
+            userTag.setHouseId(houseInfo.getHouseid());
+            userTag.setStatus(3);
+
+            EntityWrapper<UserTag> wrapper = new EntityWrapper<>();
+            wrapper.setEntity(userTag);
+            List<UserTag> userTags = userTagMapper.selectList(wrapper);
+            Float score = 0f;
+            if (userTags != null && !userTags.isEmpty()) {
+                score = Optional.ofNullable(userTags.get(0).getScore()).orElse(0f);
+            }
+            houseVo.setScore(score);
+            house.add(houseVo);
+        });
+        houseInfoListVo.setList(house);
+        return houseInfoListVo;
     }
 
 

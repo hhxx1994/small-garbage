@@ -28,16 +28,6 @@
     </el-row>
     <hr>
     </span>
-    <el-row class="page">
-      <el-col :span="24">
-        <el-pagination @current-change="changePage"
-                       background
-                       layout="prev, pager, next"
-                       :total='total'
-        >
-        </el-pagination>
-      </el-col>
-    </el-row>
 
   </div>
 </template>
@@ -57,6 +47,7 @@
         let title=e.currentTarget.title
         let score=this.houseInfo[title]['score']
         this.$http.get('/api/houseInfo/score?houseId=' + id + "&score=" + score).then((response) => {
+
         });
 
       },
@@ -64,7 +55,7 @@
         this.getData(currentPage)
       },
       getData(currentPage) {
-        this.$http.get('/api/houseInfo/list?currentPage=' + currentPage).then((response) => {
+        this.$http.get('/api/recommend/house').then((response) => {
           response = response.data;
           this.total = response['total']
           this.houseInfo = response['list']
@@ -73,7 +64,15 @@
     },
     mounted() {
       this.$nextTick(function () {
-        this.getData(1)
+        this.getData()
+        let _this=this
+        setInterval(()=>{
+          _this.$http.get('/api/recommend/house').then((response) => {
+            response = response.data;
+            _this.total = response['total']
+            _this.houseInfo = response['list']
+          });
+        },1000*60*5)
       })
     }
   }

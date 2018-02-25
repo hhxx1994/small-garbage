@@ -2,9 +2,10 @@ package com.hhx.house.controller;
 
 import com.hhx.house.entity.HouseInfo;
 import com.hhx.house.service.HouseInfoService;
+import com.hhx.house.vo.HouseInfoListVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,8 +21,15 @@ public class RecommendHouseController {
     private HouseInfoService houseInfoService;
 
 
-    @RequestMapping("/house")
-    public List<HouseInfo> getRecommendHouseInfo(int userId){
+    @RequestMapping("/houseInfo")
+    public List<HouseInfo> getRecommendHouseInfo(int userId) {
         return houseInfoService.getHouseRecommend(userId);
     }
+
+    @RequestMapping("/house")
+    public HouseInfoListVo getRecommendHouse(@RequestParam(defaultValue = "10007") int userId) {
+        return houseInfoService.recommendVo(userId);
+    }
+
+
 }
