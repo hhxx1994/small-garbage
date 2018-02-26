@@ -49,7 +49,7 @@ class RecommendService {
   /**
     * 5分钟训练一次
     */
-  @Scheduled(cron = "0 0/3 * * * ?")
+  @Scheduled(cron = "0 0/3 * * * ?")                               
   private def trainData = {
     val tags = userTagMapper.getTrainData
     val ratings = tags.asScala.map(tag => Rating(tag.getUserId, tag.getId, tag.getCount + tag.getScore))

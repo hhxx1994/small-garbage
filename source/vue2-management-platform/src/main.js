@@ -60,7 +60,7 @@ let routes = [
       {path: '/table', component: Table, name: '小区房价分布图', class: 'fa-line-chart'},
       {path: '/picture', component: picture, name: '房价热力图', class: 'fa-line-chart'},
       {path: '/recommend', component: Recommend, name: '用户推荐', class: 'fa-newspaper-o'},
-      {path: '/form', component: Form, name: '用户推荐2', class: 'fa-newspaper-o'}
+      // {path: '/form', component: Form, name: '用户推荐2', class: 'fa-newspaper-o'}
     ]
   },
   {
