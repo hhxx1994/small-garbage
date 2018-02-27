@@ -7,7 +7,9 @@
           <template v-for="(item,index) in $router.options.routes[0].children" v-if="!item.hidden">
             <el-menu-item :index="item.path"><i class="fa" :class="item.class"></i>{{item.name}}</el-menu-item>
           </template>
-
+          <template v-if="$store.state.user">
+          <el-menu-item index="/recommend"><i class='fa fa-newspaper-o'></i>用户推荐</el-menu-item>
+          </template>
         </el-menu>
         <section class="contentCon">
           <el-col :span="21" :offset="3" class="content-wrapper">
@@ -22,7 +24,8 @@
 </template>
 <script>
   import header from './views/header/header.vue';
-
+  import 'font-awesome/css/font-awesome.min.css';
+  import 'element-ui/lib/theme-default/index.css';
   //const ERR_OK = "000";
   export default {
     data() {

@@ -54,7 +54,8 @@
 <script>
   import Back from '../../components/back'
   import {LoginUser} from '../../api/api'
-
+  import recommend from '../../components/recommend'
+  import App from '../../App';
   export default {
     components: {
       Back
@@ -117,6 +118,17 @@
               sessionStorage.setItem('user', JSON.stringify(user))
               // 在这里挂上，官方说的分发，登录的action
               // 应该这样就行了把
+
+              let newRoutes = []
+              newRoutes.push({
+                path: '/',
+                component: App,
+                children: [
+                  {path: '/recommend', component: recommend, name: '用户推荐', class: 'fa-newspaper-o'}
+                ]
+              })
+              this.$router.addRoutes(newRoutes)
+
               this.$store.dispatch('login')
               // console.log(user)
               // 跳转到我的信息的页面
