@@ -46,7 +46,7 @@
         let id = e.currentTarget.id
         let title=e.currentTarget.title
         let score=this.houseInfo[title]['score']
-        this.$http.get('/api/houseInfo/score?houseId=' + id + "&score=" + score).then((response) => {
+        this.$http.get('/api/houseInfo/score?houseId=' + id + "&score=" + score+"&userId="+this.$store.state.user.id).then((response) => {
 
         });
 
@@ -55,7 +55,7 @@
         this.getData(currentPage)
       },
       getData(currentPage) {
-        this.$http.get('/api/recommend/house').then((response) => {
+        this.$http.get('/api/recommend/house?userId='+this.$store.state.user.id).then((response) => {
           response = response.data;
           this.total = response['total']
           this.houseInfo = response['list']

@@ -32,12 +32,12 @@ public class HouseInfoController {
 
     @RequestMapping("/list")
     public HouseInfoListVo houseInfoList(@RequestParam(defaultValue = "1") Integer currentPage,
-                                         @RequestParam(defaultValue = "10007") Integer userId) {
+                                          Integer userId) {
         return houseInfoService.houseInfoList(currentPage, userId);
     }
 
     @RequestMapping("/score")
-    public void score(float score, String houseId, @RequestParam(defaultValue = "10007") Integer userId) {
+    public void score(float score, String houseId, Integer userId) {
         UserTag userTag = new UserTag();
         userTag.setUserId(userId);
         userTag.setHouseId(houseId);

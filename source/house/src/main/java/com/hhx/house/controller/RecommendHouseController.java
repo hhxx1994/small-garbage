@@ -27,7 +27,7 @@ public class RecommendHouseController {
     }
 
     @RequestMapping("/house")
-    public HouseInfoListVo getRecommendHouse(@RequestParam(defaultValue = "10007") int userId) {
+    public HouseInfoListVo getRecommendHouse(int userId) {
         return houseInfoService.recommendVo(userId);
     }
 
