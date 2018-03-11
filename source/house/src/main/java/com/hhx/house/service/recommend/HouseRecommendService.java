@@ -1,18 +1,27 @@
 package com.hhx.house.service.recommend;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.google.common.collect.Maps;
+import com.hhx.house.entity.Gps;
+import com.hhx.house.entity.MapLocation;
 import com.hhx.house.entity.UserTag;
 import com.hhx.house.mapping.HouseInfoMapper;
 import com.hhx.house.mapping.MapLocationMapper;
 import com.hhx.house.mapping.UserTagMapper;
 import com.hhx.house.service.HouseInfoService;
+import com.hhx.house.utils.PositionUtil;
 import com.hhx.house.vo.SearchVo;
 import org.apache.spark.mllib.recommendation.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,8 +68,14 @@ public class HouseRecommendService {
     }
 
 
+    @PostConstruct
     @Cacheable(value = "models", key = "#root.methodName")
     public List<SearchVo> getSearchVoList() {
+        Wrapper<MapLocation> tWrapper = new EntityWrapper<>();
+        tWrapper.eq("status", "1");
+        Map<String, MapLocation> map = Maps.newHashMap();
+        mapLocationMapper.selectList(tWrapper).forEach(location -> map.put(location.getName(), location));
+
         return houseInfoMapper.selectList(null)
                 .stream()
                 .map(houseInfo -> {
@@ -103,6 +118,14 @@ public class HouseRecommendService {
                             .totalPrice(totalPrice)
                             .unitPrice(unitPrice)
                             .build();
+
+                }).peek(searchVo -> {
+                    Optional.ofNullable(map.get(searchVo.getCommunity()))
+                            .ifPresent(mapLocation -> {
+                                Gps gps = PositionUtil.bd09_To_Gps84(Double.parseDouble(mapLocation.getGcjLat()), Double.parseDouble(mapLocation.getGcjLng()));
+                                searchVo.setLat(gps.getWgLat());
+                                searchVo.setLng(gps.getWgLon());
+                            });
 
                 }).collect(Collectors.toList());
 

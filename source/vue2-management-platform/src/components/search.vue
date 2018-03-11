@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24">
         <div class="block">
-          <label>每平米价格(万):</label>
+          <label>每平米价格:</label>
           <el-slider :range="true" :max="20" :step="0.1" v-model="form.unitPrice"></el-slider>
         </div>
       </el-col>
@@ -69,14 +69,14 @@
     methods: {
       submit: function () {
         let param = {
-          unitPrice:this.form.unitPrice,
-          area:this.form.area,
-          year:this.form.year,
-          name:this.form.name,
+          unitPrice: [this.form.unitPrice[0]*10000,this.form.unitPrice[1]*10000],
+          area: this.form.area,
+          year: this.form.year,
+          name: this.form.name,
         }
-        this.$http.post('/api/recommend/search',param).then((response) => {
+        this.$http.post('/api/recommend/search', param).then((response) => {
           response = response.data;
-
+          console.log(response)
         });
       }
 

@@ -5,7 +5,9 @@
         <div id="container4" style="height: 500px"></div>
       </el-col>
       <el-col :span="6" class="chart">
-        <div id="container5" style="height: 500px"><v-search></v-search></div>
+        <div id="container5" style="height: 500px">
+          <v-search></v-search>
+        </div>
       </el-col>
 
     </el-row>
@@ -29,16 +31,16 @@
     },
     methods: {
       getUserChartInit2(chartsData) {
-        var dom=document.getElementById('container4');
+        var dom = document.getElementById('container4');
 
         const myChart = echarts.init(dom);
         myChart.showLoading();
         var data = [];
         var geoCoordMap = {};
-        chartsData.forEach(ele=>{
-          let obj={name:ele['name'],value:ele['value']};
+        chartsData.forEach(ele => {
+          let obj = {name: ele['name'], value: ele['value']};
           data.push(obj);
-          geoCoordMap[ele['name']]=ele['coords'];
+          geoCoordMap[ele['name']] = ele['coords'];
         });
 
         var convertData = function (data) {
@@ -48,7 +50,10 @@
             if (geoCoord) {
               res.push({
                 name: data[i].name,
-                value: geoCoord.concat(data[i].value)
+                value: geoCoord.concat(data[i].value),
+                tooltip: {
+                  formatter: '{b}'
+                }
               });
             }
           }
@@ -56,7 +61,7 @@
         };
 
 
-        var option =   {
+        var option = {
           title: {
             text: '小区-房价',
             left: 'center'
@@ -69,7 +74,7 @@
               saveAsImage: {show: true}
             }
           },
-          tooltip : {
+          tooltip: {
             trigger: 'item'
           },
           bmap: {
@@ -176,7 +181,7 @@
               }]
             }
           },
-          series : [
+          series: [
             {
               type: 'scatter',
               coordinateSystem: 'bmap',
@@ -186,56 +191,59 @@
               },
               label: {
                 normal: {
-                  formatter: '',
+                  show: false,
+                  formatter: '{b}',
                   position: 'right',
-                  show: false
                 },
                 emphasis: {
-                  formatter: '{b}:{@[2]}',
+                  show: true,
+                  formatter: '{b}',
                   position: 'right',
-                  show: true
                 }
               },
               itemStyle: {
                 normal: {
                   color: 'purple'
+                },
+                emphasis: {
+                  color: 'purple'
                 }
               }
             },
-            {
-              type: 'effectScatter',
-              coordinateSystem: 'bmap',
-              data: convertData(data.sort(function (a, b) {
-                return b.value - a.value;
-              }).slice(0, 10)),
-              symbolSize: function (val) {
-                return val[2] / 10000;
-              },
-              showEffectOn: 'render',
-              rippleEffect: {
-                brushType: 'stroke'
-              },
-              label: {
-                normal: {
-                  formatter: '',
-                  position: 'right',
-                  show: false
-                },
-                emphasis:{
-                  formatter: '{b}:{@[2]}',
-                  position: 'right',
-                  show: true
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: 'red',
-                  shadowBlur: 10,
-                  shadowColor: '#333'
-                }
-              },
-              zlevel: 1
-            }
+            // {
+            //   type: 'effectScatter',
+            //   coordinateSystem: 'bmap',
+            //   data: convertData(data.sort(function (a, b) {
+            //     return b.value - a.value;
+            //   }).slice(0, 10)),
+            //   symbolSize: function (val) {
+            //     return val[2] / 10000;
+            //   },
+            //   showEffectOn: 'render',
+            //   rippleEffect: {
+            //     brushType: 'stroke'
+            //   },
+            //   label: {
+            //     normal: {
+            //       formatter: '',
+            //       position: 'right',
+            //       show: false
+            //     },
+            //     emphasis:{
+            //       formatter: '{b}:{@[2]}',
+            //       position: 'right',
+            //       show: true
+            //     }
+            //   },
+            //   itemStyle: {
+            //     normal: {
+            //       color: 'red',
+            //       shadowBlur: 10,
+            //       shadowColor: '#333'
+            //     }
+            //   },
+            //   zlevel: 1
+            // }
           ]
         };
 
