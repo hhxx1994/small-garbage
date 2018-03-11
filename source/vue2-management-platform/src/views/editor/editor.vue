@@ -2,19 +2,19 @@
   <div class="chart-container">
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="allmap3" style="height: 500px">图表加载失败</div>
+        <div id="allmap3" style="height: 500px"></div>
       </el-col>
       <el-col :span="12" class="chart chart_left">
-        <div id="allmap4" style="height: 500px">图表加载失败</div>
+        <div id="allmap4" style="height: 500px"></div>
       </el-col>
     </el-row>
     <hr>
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="allmap5" style="height: 500px">图表加载失败</div>
+        <div id="allmap5" style="height: 500px"></div>
       </el-col>
       <el-col :span="12" class="chart chart_left">
-        <div id="allmap6" style="height: 500px">图表加载失败</div>
+        <div id="allmap6" style="height: 500px"></div>
       </el-col>
     </el-row>
 

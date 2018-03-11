@@ -1,8 +1,11 @@
 <template>
   <div class="chart-container">
     <el-row>
-      <el-col :span="24" class="chart">
-        <div id="container4" style="height: 500px">图表加载失败</div>
+      <el-col :span="18" class="chart">
+        <div id="container4" style="height: 500px"></div>
+      </el-col>
+      <el-col :span="6" class="chart">
+        <div id="container5" style="height: 500px"><v-search></v-search></div>
       </el-col>
 
     </el-row>
@@ -14,11 +17,15 @@
 
   import echarts from 'echarts'
   import bmap from 'echarts/extension/bmap/bmap'
+  import search from '../../components/search'
 
 
   export default {
     data() {
       return {};
+    },
+    components: {
+      'v-search': search
     },
     methods: {
       getUserChartInit2(chartsData) {
