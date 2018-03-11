@@ -12,4 +12,5 @@ public class LocationDataDto {
     private String community;
     private double gcjLng;
     private double gcjLat;
+    private String houseId;
 }

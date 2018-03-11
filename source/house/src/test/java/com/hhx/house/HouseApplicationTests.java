@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.hhx.house.entity.Gps;
 import com.hhx.house.entity.MapLocation;
 import com.hhx.house.mapping.MapLocationMapper;
+import com.hhx.house.service.recommend.HouseRecommendService;
 import com.hhx.house.utils.PositionUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,9 @@ public class HouseApplicationTests {
 
     @Autowired
     private MapLocationMapper mapLocationMapper;
+
+    @Autowired
+    private HouseRecommendService houseRecommendService;
 
     @Test
     public void contextLoads() {
@@ -41,11 +45,16 @@ public class HouseApplicationTests {
     }
 
     @Test
-    public void printSql(){
+    public void printSql() {
         Wrapper<MapLocation> wrapper = new EntityWrapper<>();
         int size = mapLocationMapper.selectList(wrapper).size();
-        System.out.println("size="+size);
+        System.out.println("size=" + size);
 
+    }
+
+    @Test
+    public void houseRecommendServiceTest() {
+        houseRecommendService.getSearchVoList().forEach(System.out::println);
     }
 
 }

@@ -28,10 +28,12 @@
     <result column="lat"  property="gcjLat" />
     <result column="community"  property="community" />
     <result column="price"  property="price" />
+    <result column="houseID"  property="houseId" />
   </resultMap>
   <select id="getLocationData" resultMap="LocationDataMap" >
     <!--SELECT h.*,m.gcj_lng,m.gcj_lat FROM (SELECT AVG(unitPrice) price,community FROM houseinfo GROUP BY community) h JOIN maplocation m ON h.community=m.name AND m.status=1-->
-    SELECT h.*,m.lng,m.lat FROM (SELECT AVG(unitPrice) price,community FROM houseinfo GROUP BY community) h JOIN maplocation m ON h.community=m.name AND m.status=1
+    SELECT h.*,m.lng,m.lat FROM (SELECT AVG(unitPrice) price,community,houseID FROM houseinfo GROUP BY community) h JOIN maplocation m ON h.community=m.name AND m.status=1
+
   </select>
 
 </mapper>

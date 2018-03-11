@@ -24,7 +24,7 @@
       <el-col :span="24">
         <div class="block">
           <label>建造时间(年):</label>
-          <el-slider :range="true" :max="2018" :min="1970" :step="1"  v-model="form.year"></el-slider>
+          <el-slider :range="true" :max="2018" :min="1970" :step="1" v-model="form.year"></el-slider>
         </div>
       </el-col>
 
@@ -35,11 +35,22 @@
       <el-col :span="24">
         <div class="block">
           <label>小区名称:</label>
-          <el-input v-model="name" placeholder="请输入内容"></el-input>
+          <el-input v-model="form.name" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
 
     </el-row>
+
+    <br>
+    <el-row>
+      <el-col :span="24">
+        <div class="block">
+          <el-button @click="submit" type="primary">提交</el-button>
+        </div>
+      </el-col>
+
+    </el-row>
+
 
   </div>
 </template>
@@ -48,13 +59,27 @@
     data() {
       return {
         form: {
-          unitPrice: [0,20],
-          area:[30,200],
-          year:[1970,2018],
-          name:"",
+          unitPrice: [0, 20],
+          area: [30, 200],
+          year: [1970, 2018],
+          name: "",
         }
       }
     },
-    methods: {}
+    methods: {
+      submit: function () {
+        let param = {
+          unitPrice:this.form.unitPrice,
+          area:this.form.area,
+          year:this.form.year,
+          name:this.form.name,
+        }
+        this.$http.post('/api/recommend/search',param).then((response) => {
+          response = response.data;
+
+        });
+      }
+
+    }
   }
 </script>
