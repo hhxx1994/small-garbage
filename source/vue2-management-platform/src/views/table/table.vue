@@ -9,53 +9,71 @@
           <el-row>
             <el-col :span="24">
               <div class="block">
-                <label>每平米价格:</label>
-                <el-slider :range="true" :max="20" :step="0.1" v-model="form.unitPrice"></el-slider>
+                <label>每平米价格(万):</label>
+                <el-slider @change="submit" :range="true" :max="20" :step="0.1" v-model="form.unitPrice"></el-slider>
               </div>
             </el-col>
 
           </el-row>
-          <br>
+          <br> <br>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <label>总价(万):</label>
+                <el-slider @change="submit" :range="true" :min="50" :max="1000" :step="10"
+                           v-model="form.totalPrice"></el-slider>
+              </div>
+            </el-col>
+
+          </el-row>
+          <br> <br>
           <el-row>
             <el-col :span="24">
               <div class="block">
                 <label>面积大小:</label>
-                <el-slider :range="true" :max="200" :min="30" :step="1" v-model="form.area"></el-slider>
+                <el-slider @change="submit" :range="true" :max="200" :min="30" :step="1"
+                           v-model="form.area"></el-slider>
               </div>
             </el-col>
 
           </el-row>
-          <br>
+          <br> <br>
           <el-row>
             <el-col :span="24">
               <div class="block">
                 <label>建造时间(年):</label>
-                <el-slider :range="true" :max="2018" :min="1970" :step="1" v-model="form.year"></el-slider>
+                <el-slider @change="submit" :range="true" :max="2018" :min="1970" :step="1"
+                           v-model="form.year"></el-slider>
               </div>
             </el-col>
 
           </el-row>
 
-          <br>
+          <br> <br>
           <el-row>
             <el-col :span="24">
               <div class="block">
-                <label>小区名称:</label>
-                <el-input v-model="form.name" placeholder="请输入内容"></el-input>
+                <label>房:</label>
+                <el-input-number v-model="form.room" @change="submitRoom" :min="0" :max="10"
+                                 label="房"></el-input-number>
               </div>
             </el-col>
 
           </el-row>
 
-          <br>
+          <br> <br>
           <el-row>
             <el-col :span="24">
               <div class="block">
-                <el-button @click="submit" type="primary">提交</el-button>
+                <label>厅:</label>
+                <el-input-number v-model="form.office" @change="submitOffice" :min="0" :max="10"
+                                 label="厅"></el-input-number>
               </div>
             </el-col>
 
           </el-row>
+
+
         </div>
       </el-col>
 
@@ -77,6 +95,9 @@
           unitPrice: [0, 20],
           area: [30, 200],
           year: [1970, 2018],
+          totalPrice: [50, 1000],
+          room: 0,
+          office: 0,
           name: "",
           dom: {},
           myChart: {},
@@ -114,8 +135,7 @@
           return res;
         };
 
-        let realData=convertData(data);
-        console.log(realData);
+        let realData = convertData(data);
 
 
         var option = {
@@ -273,20 +293,50 @@
         this.myChart.setOption(option);
 
 
-
       },
       submit: function () {
         let param = {
           unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
           area: this.form.area,
           year: this.form.year,
-          name: this.form.name,
+          totalPrice: this.form.totalPrice,
+          room: this.form.room,
+          office: this.form.office
         }
         this.$http.post('/api/recommend/search', param).then((response) => {
           response = response.data;
           this.getUserChartInit2(response);
         });
       },
+      submitRoom: function (value) {
+        let param = {
+          unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
+          area: this.form.area,
+          year: this.form.year,
+          totalPrice: this.form.totalPrice,
+          room: value,
+          office: this.form.office
+        }
+        this.$http.post('/api/recommend/search', param).then((response) => {
+          response = response.data;
+          this.getUserChartInit2(response);
+        });
+      },
+      submitOffice: function (value) {
+        let param = {
+          unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
+          area: this.form.area,
+          year: this.form.year,
+          totalPrice: this.form.totalPrice,
+          room: this.form.room,
+          office: value
+        }
+        this.$http.post('/api/recommend/search', param).then((response) => {
+          response = response.data;
+          this.getUserChartInit2(response);
+        });
+      },
+
       init: function () {
         this.dom = document.getElementById('container4');
         this.myChart = echarts.init(this.dom);

@@ -15,6 +15,9 @@ public class SearchParam {
     private List<Double> unitPrice;
     private List<Double> area;
     private List<Integer> year;
+    private List<Integer> totalPrice;
+    private Integer room;
+    private Integer office;
 
 
 }

@@ -256,11 +256,11 @@ public class HouseInfoService {
             Gps gps = PositionUtil.bd09_To_Gps84(gcjLat, gcjLng);
             return new LocationDataVo(community.trim(), price, Arrays.asList(gps.getWgLon(), gps.getWgLat()));
         })
-                //bj,gz,sh,sz
-                .filter(getLocationDataVoPredicate(0, 117.30d, 115.25d, 114.3d, 112.57d, 122.2d, 120.85d, 114.37d,
-                        113.52d))
-                .filter(getLocationDataVoPredicate(1, 41.03d, 39.26d, 23.56d, 22.26d, 31.8833d, 30.6667d,
-                        22.52d, 22.27d))
+//                //bj,gz,sh,sz
+//                .filter(getLocationDataVoPredicate(0, 117.30d, 115.25d, 114.3d, 112.57d, 122.2d, 120.85d, 114.37d,
+//                        113.52d))
+//                .filter(getLocationDataVoPredicate(1, 41.03d, 39.26d, 23.56d, 22.26d, 31.8833d, 30.6667d,
+//                        22.52d, 22.27d))
                 .collect(Collectors.toList());
 
     }

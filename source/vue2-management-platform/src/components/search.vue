@@ -30,16 +30,6 @@
 
     </el-row>
 
-    <br>
-    <el-row>
-      <el-col :span="24">
-        <div class="block">
-          <label>小区名称:</label>
-          <el-input v-model="form.name" placeholder="请输入内容"></el-input>
-        </div>
-      </el-col>
-
-    </el-row>
 
     <br>
     <el-row>
@@ -72,7 +62,6 @@
           unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
           area: this.form.area,
           year: this.form.year,
-          name: this.form.name,
         }
         this.$http.post('/api/recommend/search', param).then((response) => {
           response = response.data;

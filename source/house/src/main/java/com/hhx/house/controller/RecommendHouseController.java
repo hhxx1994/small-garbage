@@ -7,7 +7,6 @@ import com.hhx.house.service.HouseInfoService;
 import com.hhx.house.service.recommend.HouseRecommendService;
 import com.hhx.house.vo.HouseInfoListVo;
 import com.hhx.house.vo.LocationDataVo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -62,12 +60,26 @@ public class RecommendHouseController {
                             searchVo.getYear() <= searchParam.getYear().get(1);
                 })
                 .filter(searchVo -> {
-                    if (StringUtils.isBlank(searchParam.getName())) {
-                        return true;
-                    } else {
-                        return Objects.equals(searchVo.getCommunity(), searchParam.getName());
-                    }
-                }).map(searchVo -> {
+                    return searchParam.getTotalPrice().get(0) <= searchVo.getTotalPrice() &&
+                            searchVo.getTotalPrice() <= searchParam.getTotalPrice().get(1);
+                })
+                .filter(searchVo -> {
+                    Integer room = searchParam.getRoom();
+                    return room == 0 || room.equals(searchVo.getRoom());
+
+                })
+                .filter(searchVo -> {
+                    Integer office = searchParam.getOffice();
+                    return office == 0 || office.equals(searchVo.getOffice());
+                })
+//                .filter(searchVo -> {
+//                    if (StringUtils.isBlank(searchParam.getName())) {
+//                        return true;
+//                    } else {
+//                        return Objects.equals(searchVo.getCommunity(), searchParam.getName());
+//                    }
+//                })
+                .map(searchVo -> {
                     return LocationDataVo.builder()
                             .name(searchVo.getCommunity())
                             .value(searchVo.getUnitPrice())
