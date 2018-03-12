@@ -5,6 +5,7 @@
         <li>
           <span v-if="user">
             <span class="header-lang is-active">用户：{{user.name}}</span>
+             <el-button class="button" @click.native="tologinOut" type="success" size="small" round>退出</el-button>
           </span>
           <span v-else>
             <el-button class="button" @click.native="tologin" type="danger" size="small" round>登录</el-button>
@@ -30,6 +31,11 @@
       toRegin() {
         this.$router.push('/regin')
       },
+      tologinOut() {
+        sessionStorage.removeItem('user')
+        this.$store.dispatch('logout')
+        this.$router.push('/index')
+      }
     },
     //获取store的User数据
     computed: {
