@@ -69,14 +69,17 @@
     methods: {
       submit: function () {
         let param = {
-          unitPrice: [this.form.unitPrice[0]*10000,this.form.unitPrice[1]*10000],
+          unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
           area: this.form.area,
           year: this.form.year,
           name: this.form.name,
         }
         this.$http.post('/api/recommend/search', param).then((response) => {
           response = response.data;
-          console.log(response)
+          sessionStorage.setItem('searchData', JSON.stringify(response))
+          this.$store.dispatch('searchDataAction')
+          this.$parent.getUserChartInit2();
+
         });
       }
 

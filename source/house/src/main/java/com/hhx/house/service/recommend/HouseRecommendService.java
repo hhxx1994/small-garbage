@@ -127,7 +127,9 @@ public class HouseRecommendService {
                                 searchVo.setLng(gps.getWgLon());
                             });
 
-                }).collect(Collectors.toList());
+                })
+                .filter(searchVo -> searchVo.getLat() != null)
+                .collect(Collectors.toList());
 
     }
 

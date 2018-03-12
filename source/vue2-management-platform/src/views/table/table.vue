@@ -6,7 +6,56 @@
       </el-col>
       <el-col :span="6" class="chart">
         <div id="container5" style="height: 500px">
-          <v-search></v-search>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <label>每平米价格:</label>
+                <el-slider :range="true" :max="20" :step="0.1" v-model="form.unitPrice"></el-slider>
+              </div>
+            </el-col>
+
+          </el-row>
+          <br>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <label>面积大小:</label>
+                <el-slider :range="true" :max="200" :min="30" :step="1" v-model="form.area"></el-slider>
+              </div>
+            </el-col>
+
+          </el-row>
+          <br>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <label>建造时间(年):</label>
+                <el-slider :range="true" :max="2018" :min="1970" :step="1" v-model="form.year"></el-slider>
+              </div>
+            </el-col>
+
+          </el-row>
+
+          <br>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <label>小区名称:</label>
+                <el-input v-model="form.name" placeholder="请输入内容"></el-input>
+              </div>
+            </el-col>
+
+          </el-row>
+
+          <br>
+          <el-row>
+            <el-col :span="24">
+              <div class="block">
+                <el-button @click="submit" type="primary">提交</el-button>
+              </div>
+            </el-col>
+
+          </el-row>
         </div>
       </el-col>
 
@@ -19,22 +68,27 @@
 
   import echarts from 'echarts'
   import bmap from 'echarts/extension/bmap/bmap'
-  import search from '../../components/search'
 
 
   export default {
     data() {
-      return {};
+      return {
+        form: {
+          unitPrice: [0, 20],
+          area: [30, 200],
+          year: [1970, 2018],
+          name: "",
+          dom: {},
+          myChart: {},
+        },
+
+      };
     },
-    components: {
-      'v-search': search
-    },
+
     methods: {
       getUserChartInit2(chartsData) {
-        var dom = document.getElementById('container4');
 
-        const myChart = echarts.init(dom);
-        myChart.showLoading();
+
         var data = [];
         var geoCoordMap = {};
         chartsData.forEach(ele => {
@@ -59,6 +113,9 @@
           }
           return res;
         };
+
+        let realData=convertData(data);
+        console.log(realData);
 
 
         var option = {
@@ -185,7 +242,7 @@
             {
               type: 'scatter',
               coordinateSystem: 'bmap',
-              data: convertData(data),
+              data: realData,
               symbolSize: function (val) {
                 return val[2] / 10000;
               },
@@ -210,51 +267,34 @@
                 }
               }
             },
-            // {
-            //   type: 'effectScatter',
-            //   coordinateSystem: 'bmap',
-            //   data: convertData(data.sort(function (a, b) {
-            //     return b.value - a.value;
-            //   }).slice(0, 10)),
-            //   symbolSize: function (val) {
-            //     return val[2] / 10000;
-            //   },
-            //   showEffectOn: 'render',
-            //   rippleEffect: {
-            //     brushType: 'stroke'
-            //   },
-            //   label: {
-            //     normal: {
-            //       formatter: '',
-            //       position: 'right',
-            //       show: false
-            //     },
-            //     emphasis:{
-            //       formatter: '{b}:{@[2]}',
-            //       position: 'right',
-            //       show: true
-            //     }
-            //   },
-            //   itemStyle: {
-            //     normal: {
-            //       color: 'red',
-            //       shadowBlur: 10,
-            //       shadowColor: '#333'
-            //     }
-            //   },
-            //   zlevel: 1
-            // }
+
           ]
         };
+        this.myChart.setOption(option);
 
-        myChart.setOption(option);
 
-        myChart.hideLoading();
 
       },
+      submit: function () {
+        let param = {
+          unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
+          area: this.form.area,
+          year: this.form.year,
+          name: this.form.name,
+        }
+        this.$http.post('/api/recommend/search', param).then((response) => {
+          response = response.data;
+          this.getUserChartInit2(response);
+        });
+      },
+      init: function () {
+        this.dom = document.getElementById('container4');
+        this.myChart = echarts.init(this.dom);
+      }
     },
     mounted() {
       this.$nextTick(function () {
+        this.init();
         this.$http.get('/api/chartsData/locationData').then((response) => {
           response = response.data;
           this.getUserChartInit2(response);

@@ -71,7 +71,7 @@ public class RecommendHouseController {
                     return LocationDataVo.builder()
                             .name(searchVo.getCommunity())
                             .value(searchVo.getUnitPrice())
-                            .coords(Arrays.asList(searchVo.getLat(), searchVo.getLng()))
+                            .coords(Arrays.asList(searchVo.getLng(), searchVo.getLat()))
                             .build();
 
                 }).collect(Collectors.toList());
