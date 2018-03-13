@@ -66,7 +66,7 @@
             <el-col :span="24">
               <div class="block">
                 <label>厅:</label>
-                <el-input-number v-model="form.office" @change="submitOffice" :min="0" :max="10"
+                <el-input-number v-model="form.office" @change="submit" :min="0" :max="10"
                                  label="厅"></el-input-number>
               </div>
             </el-col>
@@ -316,20 +316,6 @@
           totalPrice: this.form.totalPrice,
           room: value,
           office: this.form.office
-        }
-        this.$http.post('/api/recommend/search', param).then((response) => {
-          response = response.data;
-          this.getUserChartInit2(response);
-        });
-      },
-      submitOffice: function (value) {
-        let param = {
-          unitPrice: [this.form.unitPrice[0] * 10000, this.form.unitPrice[1] * 10000],
-          area: this.form.area,
-          year: this.form.year,
-          totalPrice: this.form.totalPrice,
-          room: this.form.room,
-          office: value
         }
         this.$http.post('/api/recommend/search', param).then((response) => {
           response = response.data;

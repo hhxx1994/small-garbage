@@ -56,6 +56,8 @@
   import {LoginUser} from '../../api/api'
   import recommend from '../../components/recommend'
   import App from '../../App';
+  import searchHouse from '../table/table'
+
   export default {
     components: {
       Back
@@ -124,7 +126,8 @@
                 path: '/',
                 component: App,
                 children: [
-                  {path: '/recommend', component: recommend, name: '用户推荐', class: 'fa-newspaper-o'}
+                  {path: '/recommend', component: recommend, name: '用户推荐', class: 'fa-newspaper-o'},
+                  {path: '/searchHouse', component: searchHouse, name: '用户地图找房', class: 'fa-newspaper-o'},
                 ]
               })
               this.$router.addRoutes(newRoutes)

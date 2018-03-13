@@ -2,28 +2,28 @@
   <div class="chart-container">
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="userChart" style="height: 300px">图表加载失败</div>
+        <div id="userChart" style="height: 300px"></div>
       </el-col>
       <el-col :span="12" class="chart">
-        <div id="userDoChart" style="height: 300px">图表加载失败</div>
+        <div id="userDoChart" style="height: 300px"></div>
       </el-col>
     </el-row>
     <hr>
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="peopleChart" style="height: 300px">图表加载失败</div>
+        <div id="peopleChart" style="height: 300px"></div>
       </el-col>
       <el-col :span="12" class="chart">
-        <div id="areaPrice" style="height: 300px">图表加载失败</div>
+        <div id="areaPrice" style="height: 300px"></div>
       </el-col>
     </el-row>
     <hr>
     <el-row>
       <el-col :span="12" class="chart chart_left">
-        <div id="subWayCharts" style="height: 300px">图表加载失败</div>
+        <div id="subWayCharts" style="height: 300px"></div>
       </el-col>
       <el-col :span="12" class="chart">
-        <div id="peoplePrice" style="height: 300px">图表加载失败</div>
+        <div id="peoplePrice" style="height: 300px"></div>
       </el-col>
     </el-row>
 

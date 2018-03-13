@@ -8,7 +8,8 @@
             <el-menu-item :index="item.path"><i class="fa" :class="item.class"></i>{{item.name}}</el-menu-item>
           </template>
           <template v-if="$store.state.user">
-          <el-menu-item index="/recommend"><i class='fa fa-newspaper-o'></i>用户推荐</el-menu-item>
+            <el-menu-item index="/searchHouse"><i class='fa fa-newspaper-o'></i>用户地图找房</el-menu-item>
+            <el-menu-item index="/recommend"><i class='fa fa-newspaper-o'></i>用户推荐</el-menu-item>
           </template>
         </el-menu>
         <section class="contentCon">
@@ -29,8 +30,7 @@
   //const ERR_OK = "000";
   export default {
     data() {
-      return {
-      };
+      return {};
     },
     created() {
       // this.$http.get('/api/user').then((response) => {

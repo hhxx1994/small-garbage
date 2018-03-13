@@ -56,12 +56,14 @@
           alert("至少选取一个用户标签");
         } else {
           let params = new URLSearchParams();
-          for(let i=0;i<param.length;i++){
+          for (let i = 0; i < param.length; i++) {
             params.append("tags", param[i]);
           }
-         // console.log(this.$store.state)
-          params.append("userId",this.$store.state.user.id);
-          this.$http.post('/api/user/tags',params).then((response) => {
+          // console.log(this.$store.state)
+          params.append("userId", this.$store.state.user.id);
+          this.$http.post('/api/user/tags', params).then((response) => {
+            sessionStorage.removeItem('user')
+            this.$store.dispatch('logout')
             this.$router.push('/')
           })
         }
