@@ -3,7 +3,7 @@ chardet==3.0.4
 idna==2.6
 peewee==3.0.18
 requests==2.18.4
-urllib3==1.22
+urllib3==1.26.5
 appdirs==1.4.3
 asn1crypto==0.24.0
 attrs==17.4.0
